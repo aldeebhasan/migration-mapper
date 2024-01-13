@@ -3,22 +3,24 @@
 namespace Aldeebhasan\Emigrate\Test\Unit;
 
 use Aldeebhasan\Emigrate\EmigrateManager;
+use Aldeebhasan\Emigrate\Logic\Migration\ColumnManager;
+use Aldeebhasan\Emigrate\Logic\Migration\MethodManager;
+use Aldeebhasan\Emigrate\Logic\Migration\MigrationManager;
 use Aldeebhasan\Emigrate\Test\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 
 class EmigrateTest extends TestCase
 {
     use WithFaker;
-    private $x=1;
+
+    private $x = 1;
+
     function test_a()
     {
 
-        $str = <<<EOD
-                Schema::create('$this->x', function (Blueprint \$table) {
-                   
-                });
-                EOD;
-        dd($str);
+//        $manger = MigrationManager::make();
+//
+//        dd($manger->makeMethod('nullable')->toString());
         EmigrateManager::make()->generateMigration();
 
     }

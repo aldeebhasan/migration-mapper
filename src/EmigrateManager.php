@@ -4,12 +4,23 @@ namespace Aldeebhasan\Emigrate;
 
 
 use Aldeebhasan\Emigrate\Attributes\Migratable;
+use Aldeebhasan\Emigrate\Logic\IO\StubIO;
+use Aldeebhasan\Emigrate\Logic\Migration\MigrationManager;
 use Aldeebhasan\Emigrate\Traits\Makable;
 use Illuminate\Support\Facades\File;
 
 class EmigrateManager
 {
     use  Makable;
+
+    private MigrationManager $migrationManager;
+    private StubIO $stubManager;
+
+    public function __construct()
+    {
+        $this->migrationManager = MigrationManager::make();
+        $this->stubManager = StubIO::make();
+    }
 
     public function generateMigration(): void
     {
@@ -58,12 +69,40 @@ class EmigrateManager
     private function handleModel(\ReflectionClass $reflection, \ReflectionAttribute $attribute): void
     {
         $filename = strtolower($reflection->getShortName());
-        dump($filename);
         $columns = [];
         foreach ($attribute->getArguments() as $key => $value) {
-            $configuration = explode("|", $value);
-            $columns[$key] = $configuration;
+            //start with:  'decimal:10,2->nullable|default:empty'
+            $columnData = explode("->", $value); // [ 'decimal:10,2','index|nullable']
+            $typeData = explode(":", $columnData[0]); //['decimal','10,2']
+            $typeProperties = explode(",", $typeData[1] ?? ''); //[10,2]
+
+            $configuration = explode("|", $columnData[1] ?? ''); // ['nullable','default:empty']
+
+            $columns[$key] = [
+                'type' => $typeData[0],
+                'properties' => $typeProperties,
+                'configurations' => $configuration,
+            ];
         }
+
+        $tableName = str($filename)->plural()->toString();
+        $baseTable = $this->migrationManager->makeTable($tableName);
+        foreach ($columns as $name => $columnConfig) {
+            $type = $columnConfig['type'];
+            $properties = $columnConfig['properties'];
+            $baseColumn = $this->migrationManager->makeColumn($type, $name, ...$properties);
+            foreach ($columnConfig['configurations'] ?? [] as $config) {
+                $propertyData = explode(":", $config);
+                $baseMethod = $this->migrationManager->makeMethod($propertyData[0], $propertyData[1] ?? '');
+                $baseColumn->chain($baseMethod);
+            }
+            $baseTable->chain($baseColumn);
+        }
+
+        $this->stubManager->read(stub_path("migration.generate.anonymous.stub"));
+        $this->stubManager->prepare($baseTable->toString(), '');
+        $this->stubManager->write(database_path("migrations/create_{$filename}_table.php"));
+
     }
 
 

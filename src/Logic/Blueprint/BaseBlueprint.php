@@ -9,6 +9,7 @@ abstract class BaseBlueprint implements BlueprintIU
     use Makable;
 
     public static string $slot = '{{ slot }}';
+    public static string $tab = "\t";
 
     /**
      * @var BlueprintIU[]

@@ -11,10 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Migratable(
-    id: 'primary|bigint|index',
-    name: 'string|bigint',
-    user_id: 'int|index',
-    parent_id: 'int|index'
+    id: 'id->index|nullable',
+    name: 'string->nullable|default:hi there',
+    work: 'string:255->nullable|default:hi there',
+    salary: 'decimal:10,2->nullable|default:hi there',
+    description: 'text->nullable|default:description',
+    user_id: 'integer->index',
+    parent_id: 'integer->index'
 )]
 class XModel extends Model
 {

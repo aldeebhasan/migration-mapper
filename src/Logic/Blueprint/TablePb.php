@@ -23,19 +23,22 @@ class TablePb extends BaseBlueprint
     public function template(): string
     {
         $slot = self::$slot;
+        $tabs = str_repeat(self::$tab, 2);
         return match ($this->action) {
             'create' => <<<EOD
-                        Schema::create('$this->name', function (Blueprint \$table) {
-                           $slot
-                        });
+                        {$tabs}Schema::create('$this->name', function (Blueprint \$table) {
+                        
+                        $slot
+                        {$tabs}});
                         EOD,
             'update' => <<<EOD
-                        Schema::table('$this->name', function (Blueprint \$table) {
-                           $slot
-                        });
+                        {$tabs}Schema::table('$this->name', function (Blueprint \$table) {
+                        
+                        $slot
+                        {$tabs}});
                         EOD,
             'destroy' => <<<EOD
-                         Schema::dropIfExists('$this->name');
+                         {$tabs}Schema::dropIfExists('$this->name');
                         EOD,
             default => "",
         };
@@ -43,6 +46,12 @@ class TablePb extends BaseBlueprint
 
     public function toString(): string
     {
-        return $this->template();
+        $subContent = '';
+        foreach ($this->chains as $chain) {
+            $subContent .= $chain->toString();
+        }
+        $content = $this->template();
+
+        return str_replace(self::$slot, $subContent, $content);
     }
 }

@@ -3,20 +3,13 @@
 namespace Aldeebhasan\Emigrate\Logic\Blueprint;
 
 
-use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
 use Aldeebhasan\Emigrate\Logic\Migration\Columns\GeneralColumn;
 
 class ColumnPb extends BaseBlueprint
 {
 
-    private string $name = '';
     private GeneralColumn $column;
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-        return $this;
-    }
 
     public function setColumn(GeneralColumn $column): self
     {
@@ -26,15 +19,17 @@ class ColumnPb extends BaseBlueprint
 
     public function template(): string
     {
-        return "\$table->" . $this->column->toString();
+        $tabs = str_repeat(self::$tab,3);
+        return "{$tabs}\$table->" . $this->column->toString();
     }
 
     public function toString(): string
     {
-        $content = '';
+        $content = $this->template();
         foreach ($this->chains as $chain) {
-            $content .= $this->template() . $chain->toString() . PHP_EOL;
+            $content .= $chain->toString();
         }
+        $content .= ';' . PHP_EOL;
         return $content;
     }
 }

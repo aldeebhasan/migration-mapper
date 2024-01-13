@@ -15,7 +15,7 @@ class DecimalColumn extends GeneralColumn
     public function toString(): string
     {
         $method = $this->type->value;
-        return "$method($this->name,$this->total,$this->places)";
+        return "$method('$this->name',$this->total,$this->places)";
     }
 
 }

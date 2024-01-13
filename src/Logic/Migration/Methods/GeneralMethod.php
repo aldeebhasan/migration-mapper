@@ -8,15 +8,14 @@ class GeneralMethod
 {
     protected MethodTypeEnum $type;
 
-    public function __construct(protected mixed $value = null)
+    public function __construct(protected mixed $value = '')
     {
     }
 
     public function toString(): string
     {
         $method = $this->type->value;
-        return "$method($this->value)";
-
+        return $this->value ? "$method('$this->value')" : "$method()";
     }
 
 

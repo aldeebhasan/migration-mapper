@@ -26,7 +26,10 @@
   "autoload-dev": {
     "psr-4": {
       "Aldeebhasan\\Emigrate\\Test\\": "tests/"
-    }
+    },
+    "files": [
+      "src/Support/helpers.php"
+    ]
   },
   "require": {
     "php": ">=8.1"
