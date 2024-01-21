@@ -19,17 +19,23 @@ class ColumnPb extends BaseBlueprint
 
     public function template(): string
     {
-        $tabs = str_repeat(self::$tab,3);
-        return "{$tabs}\$table->" . $this->column->toString();
+        $tabs = str_repeat(self::$tab, 3);
+        $content = "{$tabs}\$table->" . $this->column->toString();
+
+        return $this->handleChain($content);
     }
 
-    public function toString(): string
+    private function handleChain(string $content): string
     {
-        $content = $this->template();
         foreach ($this->chains as $chain) {
             $content .= $chain->toString();
         }
         $content .= ';' . PHP_EOL;
         return $content;
+    }
+
+    protected function reverseTemplate(): string
+    {
+        return '';
     }
 }

@@ -14,13 +14,13 @@ class MethodPb extends BaseBlueprint
         return $this;
     }
 
-    public function template(): string
+    protected function template(): string
     {
         return "->" . $this->method->toString();
     }
 
-    public function toString(): string
+    protected function reverseTemplate(): string
     {
-        return $this->template();
+        return '';
     }
 }

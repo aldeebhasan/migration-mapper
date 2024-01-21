@@ -22,4 +22,18 @@ abstract class BaseBlueprint implements BlueprintIU
         $this->chains[] = $item;
         return $this;
     }
+
+    abstract protected function template(): string;
+
+    abstract protected function reverseTemplate(): string;
+
+    public function toString(): string
+    {
+        return $this->template();
+    }
+
+    public function toStringReversed(): string
+    {
+        return $this->reverseTemplate();
+    }
 }

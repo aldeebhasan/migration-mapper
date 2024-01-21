@@ -48,5 +48,15 @@ class MigrationManager
             ->setAction($action);
     }
 
+    public function log(string $table, array $data): void
+    {
+        //
+    }
+
+    public function lastLog(string $table): array
+    {
+        return [];
+    }
+
 
 }

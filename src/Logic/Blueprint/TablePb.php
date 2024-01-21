@@ -20,20 +20,23 @@ class TablePb extends BaseBlueprint
         return $this;
     }
 
-    public function template(): string
+    public function isUpdate(): bool
+    {
+        return $this->action === 'update';
+    }
+
+    protected function template(): string
     {
         $slot = self::$slot;
         $tabs = str_repeat(self::$tab, 2);
-        return match ($this->action) {
+        $content = match ($this->action) {
             'create' => <<<EOD
                         {$tabs}Schema::create('$this->name', function (Blueprint \$table) {
-                        
                         $slot
                         {$tabs}});
                         EOD,
             'update' => <<<EOD
                         {$tabs}Schema::table('$this->name', function (Blueprint \$table) {
-                        
                         $slot
                         {$tabs}});
                         EOD,
@@ -42,16 +45,43 @@ class TablePb extends BaseBlueprint
                         EOD,
             default => "",
         };
+
+        return $this->handleChain($content);
     }
 
-    public function toString(): string
+    private function handleChain(string $content, bool $reverse = false): string
     {
-        $subContent = '';
+        $subContent = PHP_EOL;
         foreach ($this->chains as $chain) {
-            $subContent .= $chain->toString();
+            $subContent .= $reverse ? $chain->toStringReversed() : $chain->toString();
         }
-        $content = $this->template();
 
         return str_replace(self::$slot, $subContent, $content);
     }
+
+    protected function reverseTemplate(): string
+    {
+        $slot = self::$slot;
+        $tabs = str_repeat(self::$tab, 2);
+        $content = match ($this->action) {
+            'create' => <<<EOD
+                         {$tabs}Schema::dropIfExists('$this->name');
+                        EOD,
+            'update' => <<<EOD
+                        {$tabs}Schema::table('$this->name', function (Blueprint \$table) {
+                        
+                        $slot
+                        {$tabs}});
+                        EOD,
+            'destroy' => <<<EOD
+                        {$tabs}Schema::create('$this->name', function (Blueprint \$table) {
+                        
+                        $slot
+                        {$tabs}});
+                        EOD,
+            default => "",
+        };
+        return $this->handleChain($content, true);
+    }
+
 }
