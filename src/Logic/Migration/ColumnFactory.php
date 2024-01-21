@@ -25,7 +25,7 @@ use Aldeebhasan\Emigrate\Traits\Makable;
  * @method GeneralColumn double(string $name, int $total = 8, int $places = 2)
  * @method GeneralColumn enum(string $name, array $allowed = [])
  */
-class ColumnManager
+class ColumnFactory
 {
     use Makable;
 

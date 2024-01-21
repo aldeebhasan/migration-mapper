@@ -101,7 +101,8 @@ class EmigrateManager
 
         $this->stubManager->read(stub_path("migration.generate.anonymous.stub"));
         $this->stubManager->prepare($baseTable->toString(), '');
-        $this->stubManager->write(database_path("migrations/create_{$filename}_table.php"));
+        $prefix = now()->format('Y_m_d_u');
+        $this->stubManager->write(database_path("migrations/{$prefix}_create_{$filename}_table.php"));
 
     }
 

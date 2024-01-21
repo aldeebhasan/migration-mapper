@@ -3,8 +3,8 @@
 namespace Aldeebhasan\Emigrate\Test\Unit;
 
 use Aldeebhasan\Emigrate\EmigrateManager;
-use Aldeebhasan\Emigrate\Logic\Migration\ColumnManager;
-use Aldeebhasan\Emigrate\Logic\Migration\MethodManager;
+use Aldeebhasan\Emigrate\Logic\Migration\ColumnFactory;
+use Aldeebhasan\Emigrate\Logic\Migration\MethodFactory;
 use Aldeebhasan\Emigrate\Logic\Migration\MigrationManager;
 use Aldeebhasan\Emigrate\Test\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -17,7 +17,6 @@ class EmigrateTest extends TestCase
 
     function test_a()
     {
-
 //        $manger = MigrationManager::make();
 //
 //        dd($manger->makeMethod('nullable')->toString());

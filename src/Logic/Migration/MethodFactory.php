@@ -2,11 +2,6 @@
 
 namespace Aldeebhasan\Emigrate\Logic\Migration;
 
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\DecimalColumn;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\DoubleColumn;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\EnumColumn;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\FloatColumn;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\StringColumn;
 use Aldeebhasan\Emigrate\Logic\Migration\Methods\GeneralMethod;
 use Aldeebhasan\Emigrate\Traits\Makable;
 
@@ -21,7 +16,7 @@ use Aldeebhasan\Emigrate\Traits\Makable;
  * @method GeneralMethod useCurrent()
  * @method GeneralMethod change()
  */
-class MethodManager
+class MethodFactory
 {
     use Makable;
 

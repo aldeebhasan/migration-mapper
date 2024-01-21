@@ -15,7 +15,7 @@ class EnumColumn extends GeneralColumn
     public function toString(): string
     {
         $method = $this->type->value;
-        $options = implode(',', $this->allowed);
+        $options = implode(', ', $this->allowed);
         return "$method('$this->name',[$options])";
     }
 

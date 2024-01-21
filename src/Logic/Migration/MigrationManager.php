@@ -12,13 +12,13 @@ class MigrationManager
 {
     use Makable;
 
-    private ColumnManager $columnManager;
-    private MethodManager $methodManager;
+    private ColumnFactory $columnManager;
+    private MethodFactory $methodManager;
 
     public function __construct()
     {
-        $this->columnManager = ColumnManager::make();
-        $this->methodManager = MethodManager::make();
+        $this->columnManager = ColumnFactory::make();
+        $this->methodManager = MethodFactory::make();
     }
 
     public function makeTable(string $name, string $action = 'create'): TablePb
