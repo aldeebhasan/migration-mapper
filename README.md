@@ -1,4 +1,4 @@
-Laravel Cache Flusher
+Laravel Emigrate Package
 =====
 Automatically generate you migration files from your models 
 
