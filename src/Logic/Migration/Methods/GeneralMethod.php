@@ -15,8 +15,7 @@ class GeneralMethod
     public function toString(): string
     {
         $method = $this->type->value;
+
         return $this->value ? "$method('$this->value')" : "$method()";
     }
-
-
 }

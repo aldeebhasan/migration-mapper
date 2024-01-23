@@ -2,10 +2,6 @@
 
 namespace Aldeebhasan\Emigrate;
 
-use Aldeebhasan\LaravelCacheFlusher\Facades\Emigrate;
-use Illuminate\Cache\Events\KeyForgotten;
-use Illuminate\Cache\Events\KeyWritten;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class EmigrateProvider extends ServiceProvider
@@ -26,5 +22,4 @@ class EmigrateProvider extends ServiceProvider
         );
         $this->app->singleton('emigrate', EmigrateManager::class, );
     }
-
 }

@@ -7,6 +7,4 @@ use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
 class IntegerColumn extends GeneralColumn
 {
     protected ColumnTypeEnum $type = ColumnTypeEnum::INTEGER;
-
-
 }

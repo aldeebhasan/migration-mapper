@@ -29,34 +29,37 @@ class ColumnFactory
 {
     use Makable;
 
-
     public function __call(string $name, array $arguments)
     {
         $baseName = str($name)->title()->toString();
-        $namespace = "Aldeebhasan\\Emigrate\\Logic\\Migration\\Columns\\";
-        $className = $namespace . $baseName . "Column";
+        $namespace = 'Aldeebhasan\\Emigrate\\Logic\\Migration\\Columns\\';
+        $className = $namespace.$baseName.'Column';
 
-        if (!class_exists($className)) {
-            throw new \Exception("Unsupported column type!");
+        if (! class_exists($className)) {
+            throw new \Exception('Unsupported column type!');
         }
+
         return $this->handleClassInitialization($className, $arguments);
     }
 
     private function handleClassInitialization(string $class, array $arguments): GeneralColumn
     {
-        $name = $arguments[0] ?? "";
+        $name = $arguments[0] ?? '';
 
         if (in_array($class, [DecimalColumn::class, FloatColumn::class, DoubleColumn::class])) {
             $total = $arguments[1] ?? 8;
             $places = $arguments[2] ?? 2;
+
             return new $class($name, $total, $places);
 
         } elseif ($class === EnumColumn::class) {
             $allowed = $arguments[1] ?? [];
+
             return new $class($name, $allowed);
 
         } elseif ($class === StringColumn::class) {
             $length = $arguments[1] ?? 255;
+
             return new $class($name, $length);
 
         } else {

@@ -9,6 +9,7 @@ abstract class BaseBlueprint implements BlueprintIU
     use Makable;
 
     public static string $slot = '{{ slot }}';
+
     public static string $tab = "\t";
 
     /**
@@ -16,10 +17,10 @@ abstract class BaseBlueprint implements BlueprintIU
      */
     protected array $chains = [];
 
-
     public function chain(BlueprintIU $item): self
     {
         $this->chains[] = $item;
+
         return $this;
     }
 

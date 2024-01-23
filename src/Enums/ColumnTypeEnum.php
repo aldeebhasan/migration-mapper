@@ -4,7 +4,6 @@ namespace Aldeebhasan\Emigrate\Enums;
 
 enum ColumnTypeEnum: string
 {
-
     case BOOLEAN = 'boolean';
     case INTEGER = 'integer';
     case DATETIME = 'dateTime';

@@ -9,6 +9,4 @@ interface TypeIU
     public function getMethodName(): string;
 
     public function getArguments(): array;
-
-
 }

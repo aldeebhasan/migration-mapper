@@ -7,6 +7,4 @@ interface BlueprintIU
     public function toString(): string;
 
     public function toStringReversed(): string;
-
-
 }

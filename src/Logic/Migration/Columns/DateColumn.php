@@ -7,5 +7,4 @@ use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
 class DateColumn extends GeneralColumn
 {
     protected ColumnTypeEnum $type = ColumnTypeEnum::DATE;
-
 }

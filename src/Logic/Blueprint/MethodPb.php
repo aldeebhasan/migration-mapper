@@ -11,12 +11,13 @@ class MethodPb extends BaseBlueprint
     public function setMethod(GeneralMethod $method): self
     {
         $this->method = $method;
+
         return $this;
     }
 
     protected function template(): string
     {
-        return "->" . $this->method->toString();
+        return '->'.$this->method->toString();
     }
 
     protected function reverseTemplate(): string

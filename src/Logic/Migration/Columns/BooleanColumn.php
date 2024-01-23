@@ -7,5 +7,4 @@ use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
 class BooleanColumn extends GeneralColumn
 {
     protected ColumnTypeEnum $type = ColumnTypeEnum::BOOLEAN;
-
 }

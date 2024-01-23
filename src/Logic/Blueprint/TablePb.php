@@ -2,21 +2,28 @@
 
 namespace Aldeebhasan\Emigrate\Logic\Blueprint;
 
-
 class TablePb extends BaseBlueprint
 {
     private string $name = '';
+
     private string $action = 'create';
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function setAction(string $action): self
     {
         $this->action = $action;
+
         return $this;
     }
 
@@ -43,7 +50,7 @@ class TablePb extends BaseBlueprint
             'destroy' => <<<EOD
                          {$tabs}Schema::dropIfExists('$this->name');
                         EOD,
-            default => "",
+            default => '',
         };
 
         return $this->handleChain($content);
@@ -79,9 +86,9 @@ class TablePb extends BaseBlueprint
                         $slot
                         {$tabs}});
                         EOD,
-            default => "",
+            default => '',
         };
+
         return $this->handleChain($content, true);
     }
-
 }

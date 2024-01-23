@@ -2,11 +2,8 @@
 
 namespace Aldeebhasan\Emigrate;
 
-
 use Aldeebhasan\Emigrate\Attributes\Migratable;
-use Aldeebhasan\Emigrate\Logic\Blueprint\BlueprintIU;
 use Aldeebhasan\Emigrate\Logic\Blueprint\TablePb;
-use Aldeebhasan\Emigrate\Logic\IO\StubIO;
 use Aldeebhasan\Emigrate\Logic\Migration\MigrationManager;
 use Aldeebhasan\Emigrate\Traits\Makable;
 use Illuminate\Support\Facades\File;
@@ -16,12 +13,10 @@ class EmigrateManager
     use  Makable;
 
     private MigrationManager $migrationManager;
-    private StubIO $stubManager;
 
     public function __construct()
     {
         $this->migrationManager = MigrationManager::make();
-        $this->stubManager = StubIO::make();
     }
 
     public function generateMigration(): void
@@ -39,7 +34,6 @@ class EmigrateManager
 
     }
 
-
     private function handlePath(string $path): void
     {
         $files = scandir($path);
@@ -47,7 +41,7 @@ class EmigrateManager
             if ($file === '.' || $file === '..') {
                 continue;
             }
-            $filePath = join('/', [$path, $file]);
+            $filePath = implode('/', [$path, $file]);
             if (is_dir($filePath)) {
                 $this->handlePath($filePath);
             } elseif (is_file($filePath)) {
@@ -80,11 +74,7 @@ class EmigrateManager
         $baseTable = $this->convertColumnsToBlueprint($tableName, $columns);
 
         //export the migration file
-        $this->stubManager->read(stub_path("migration.generate.anonymous.stub"));
-        $this->stubManager->prepare($baseTable->toString(), $baseTable->toStringReversed());
-        $prefix = now()->format('Y_m_d_u');
-        $method = $baseTable->isUpdate() ? 'update' : 'create';
-        $this->stubManager->write(database_path("migrations/{$prefix}_{$method}_{$tableName}_table.php"));
+        $this->migrationManager->generateStub($baseTable);
         $this->migrationManager->log($tableName, $columns);
     }
 
@@ -92,12 +82,14 @@ class EmigrateManager
     {
         $columns = [];
         foreach ($attributes as $key => $value) {
+            $key = str_purify($key);
+            $value = str_purify($value);
             //start with:  'decimal:10,2->nullable|default:empty'
-            $columnData = explode("->", $value); // [ 'decimal:10,2','index|nullable']
-            $typeData = explode(":", $columnData[0]); //['decimal','10,2']
-            $typeProperties = explode(",", $typeData[1] ?? ''); //[10,2]
+            $columnData = explode('->', $value); // [ 'decimal:10,2','index|nullable']
+            $typeData = explode(':', $columnData[0]); //['decimal','10,2']
+            $typeProperties = ! empty($typeData[1]) ? explode(',', $typeData[1]) : []; //[10,2]
 
-            $configuration = explode("|", $columnData[1] ?? ''); // ['nullable','default:empty']
+            $configuration = explode('|', $columnData[1] ?? ''); // ['nullable','default:empty']
 
             $columns[$key] = [
                 'type' => $typeData[0],
@@ -105,19 +97,22 @@ class EmigrateManager
                 'configurations' => $configuration,
             ];
         }
+
         return $columns;
     }
 
     private function convertColumnsToBlueprint(string $tableName, array $columns): TablePb
     {
-        $toUpdate = !empty($this->migrationManager->lastLog($tableName));
+        $lastMigration = $this->migrationManager->lastLog($tableName);
+        $toUpdate = ! empty($lastMigration);
+
         $baseTable = $this->migrationManager->makeTable($tableName, $toUpdate ? 'update' : 'create');
         foreach ($columns as $name => $columnConfig) {
             $type = $columnConfig['type'];
             $properties = $columnConfig['properties'];
             $baseColumn = $this->migrationManager->makeColumn($type, $name, ...$properties);
             foreach ($columnConfig['configurations'] ?? [] as $config) {
-                $propertyData = explode(":", $config);
+                $propertyData = explode(':', $config);
                 $baseMethod = $this->migrationManager->makeMethod($propertyData[0], $propertyData[1] ?? '');
                 $baseColumn->chain($baseMethod);
             }
@@ -127,9 +122,9 @@ class EmigrateManager
             }
             $baseTable->chain($baseColumn);
         }
+
         return $baseTable;
     }
-
 
     private function getNamespaceFromFile($file): string
     {
@@ -145,5 +140,4 @@ class EmigrateManager
 
         return $namespace;
     }
-
 }

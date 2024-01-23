@@ -11,6 +11,4 @@ class StringColumn extends GeneralColumn
     public function __construct(public string $name, public $length = 255)
     {
     }
-
-
 }

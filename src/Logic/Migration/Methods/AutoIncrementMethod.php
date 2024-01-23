@@ -6,7 +6,5 @@ use Aldeebhasan\Emigrate\Enums\MethodTypeEnum;
 
 class AutoIncrementMethod extends GeneralMethod
 {
-
     protected MethodTypeEnum $type = MethodTypeEnum::AUTOINCREMENT;
-
 }

@@ -6,7 +6,5 @@ use Aldeebhasan\Emigrate\Enums\MethodTypeEnum;
 
 class IndexMethod extends GeneralMethod
 {
-
     protected MethodTypeEnum $type = MethodTypeEnum::INDEX;
-
 }

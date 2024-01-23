@@ -16,7 +16,7 @@ class EnumColumn extends GeneralColumn
     {
         $method = $this->type->value;
         $options = implode(', ', $this->allowed);
+
         return "$method('$this->name',[$options])";
     }
-
 }

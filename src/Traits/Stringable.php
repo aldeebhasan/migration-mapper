@@ -4,7 +4,6 @@ namespace Aldeebhasan\Emigrate\Traits;
 
 trait Stringable
 {
-
     public function toString(): string
     {
         return class_basename($this);
@@ -14,5 +13,4 @@ trait Stringable
     {
         return $this->toString();
     }
-
 }

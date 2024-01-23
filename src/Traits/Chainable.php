@@ -6,12 +6,9 @@ use Aldeebhasan\Emigrate\Logic\Blueprint\BlueprintIU;
 
 trait Chainable
 {
-
     /**
      * @var BlueprintIU[]
      */
-
-
     public function generate(): string
     {
         $subContent = '';
@@ -23,6 +20,4 @@ trait Chainable
 
         return $content;
     }
-
-
 }

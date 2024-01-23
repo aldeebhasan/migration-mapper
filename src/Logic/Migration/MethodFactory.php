@@ -20,22 +20,22 @@ class MethodFactory
 {
     use Makable;
 
-
     public function __call(string $name, array $arguments)
     {
         $baseName = str($name)->title()->toString();
-        $namespace = "Aldeebhasan\\Emigrate\\Logic\\Migration\\Methods\\";
-        $className = $namespace . $baseName . "Method";
+        $namespace = 'Aldeebhasan\\Emigrate\\Logic\\Migration\\Methods\\';
+        $className = $namespace.$baseName.'Method';
 
-        if (!class_exists($className)) {
-            throw new \Exception("Unsupported method name!");
+        if (! class_exists($className)) {
+            throw new \Exception('Unsupported method name!');
         }
+
         return $this->handleClassInitialization($className, $arguments);
     }
 
     private function handleClassInitialization(string $class, array $arguments): GeneralMethod
     {
-        $name = $arguments[0] ?? "";
+        $name = $arguments[0] ?? '';
 
         return $name ? new $class($name) : new $class();
     }

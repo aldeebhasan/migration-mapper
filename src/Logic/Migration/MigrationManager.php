@@ -2,10 +2,12 @@
 
 namespace Aldeebhasan\Emigrate\Logic\Migration;
 
-use Aldeebhasan\Emigrate\Logic\Blueprint\BlueprintIU;
 use Aldeebhasan\Emigrate\Logic\Blueprint\ColumnPb;
 use Aldeebhasan\Emigrate\Logic\Blueprint\MethodPb;
 use Aldeebhasan\Emigrate\Logic\Blueprint\TablePb;
+use Aldeebhasan\Emigrate\Logic\IO\FileIO;
+use Aldeebhasan\Emigrate\Logic\IO\StubIO;
+use Aldeebhasan\Emigrate\Logic\IO\TrackO;
 use Aldeebhasan\Emigrate\Traits\Makable;
 
 class MigrationManager
@@ -13,12 +15,19 @@ class MigrationManager
     use Makable;
 
     private ColumnFactory $columnManager;
+
     private MethodFactory $methodManager;
+
+    private FileIO $stubManager;
+
+    private FileIO $logManager;
 
     public function __construct()
     {
         $this->columnManager = ColumnFactory::make();
         $this->methodManager = MethodFactory::make();
+        $this->stubManager = StubIO::make();
+        $this->logManager = TrackO::make();
     }
 
     public function makeTable(string $name, string $action = 'create'): TablePb
@@ -31,32 +40,41 @@ class MigrationManager
     public function makeColumn(string $method, string $name = '', ...$args): ColumnPb
     {
         $targetColumn = $this->columnManager->{$method}($name, ...$args);
+
         return ColumnPb::make()->setColumn($targetColumn);
     }
 
     public function makeMethod(string $method, string $value = '', ...$args): MethodPb
     {
         $tartgetMethod = $this->methodManager->{$method}($value, ...$args);
+
         return MethodPb::make()->setMethod($tartgetMethod);
     }
 
-
-    public function generate(string $name, string $action): BlueprintIU
+    public function generateStub(TablePb $tablePb): void
     {
-        return (new TablePb())
-            ->setName($name)
-            ->setAction($action);
+        $this->stubManager->read(stub_path('migration.generate.anonymous.stub'));
+        $this->stubManager->prepare($tablePb->toString(), $tablePb->toStringReversed());
+        $prefix = now()->format('Y_m_d_u');
+        $method = $tablePb->isUpdate() ? 'update' : 'create';
+        $tableName = $tablePb->getName();
+        $path = database_path("migrations/{$prefix}_{$method}_{$tableName}_table.php");
+        $this->stubManager->write($path);
     }
 
-    public function log(string $table, array $data): void
+    public function log(string $table, array $config): void
     {
-        //
+        $path = storage_path("emigrate/migrations_{$table}.json");
+        $this->logManager->read($path);
+        $this->logManager->prepare(json_encode($config));
+        $this->logManager->write($path);
     }
 
-    public function lastLog(string $table): array
+    public function lastLog(string $table): ?array
     {
-        return [];
+        $path = storage_path("emigrate/migrations_{$table}.json");
+        $this->logManager->read($path);
+
+        return $this->logManager->lastLog($table);
     }
-
-
 }

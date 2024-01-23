@@ -2,48 +2,21 @@
 
 namespace Aldeebhasan\Emigrate\Logic\IO;
 
-use Aldeebhasan\Emigrate\Traits\Makable;
-use Illuminate\Support\Facades\File;
-
-class StubIO
+/**
+ * @method static StubIO make()
+ * @method static StubIO prepare(string $upContent, string $downContent, string $use = "")
+ */
+class StubIO extends FileIO
 {
-    use Makable;
-
-    private string $content = '';
-
-
-    public function getContent(): string
-    {
-        return $this->content;
-    }
-
-    public function read(string $path): self
-    {
-        $this->content = File::get($path);
-        return $this;
-    }
-
-
-    public function prepare(
-        string $upContent,
-        string $downContent,
-        string $use = "",
-    ): self
+    public function prepare(string ...$args): self
     {
         $replace = [
-            '{{ use }}' => $use,
-            '{{ up }}' => $upContent,
-            '{{ down }}' => $downContent,
+            '{{ up }}' => $args[0] ?? '',
+            '{{ down }}' => $args[1] ?? '',
+            '{{ use }}' => $args[2] ?? '',
         ];
         $this->content = str_replace(array_keys($replace), $replace, $this->content);
 
         return $this;
     }
-
-    public function write(string $path): self
-    {
-        File::put($path, $this->content);
-        return $this;
-    }
-
 }
