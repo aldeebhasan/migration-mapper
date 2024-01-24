@@ -46,9 +46,9 @@ class MigrationManager
 
     public function makeMethod(string $method, string $value = '', ...$args): MethodPb
     {
-        $tartgetMethod = $this->methodManager->{$method}($value, ...$args);
+        $targetMethod = $this->methodManager->{$method}($value, ...$args);
 
-        return MethodPb::make()->setMethod($tartgetMethod);
+        return MethodPb::make()->setMethod($targetMethod);
     }
 
     public function generateStub(TablePb $tablePb): void
@@ -62,7 +62,7 @@ class MigrationManager
         $this->stubManager->write($path);
     }
 
-    public function log(string $table, array $config): void
+    public function generateLog(string $table, array $config): void
     {
         $path = storage_path("emigrate/migrations_{$table}.json");
         $this->logManager->read($path);
@@ -70,7 +70,7 @@ class MigrationManager
         $this->logManager->write($path);
     }
 
-    public function lastLog(string $table): ?array
+    public function retrieveLastLog(string $table): ?array
     {
         $path = storage_path("emigrate/migrations_{$table}.json");
         $this->logManager->read($path);

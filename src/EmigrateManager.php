@@ -2,9 +2,9 @@
 
 namespace Aldeebhasan\Emigrate;
 
-use Aldeebhasan\Emigrate\Attributes\Migratable;
 use Aldeebhasan\Emigrate\Logic\Blueprint\TablePb;
 use Aldeebhasan\Emigrate\Logic\Migration\MigrationManager;
+use Aldeebhasan\Emigrate\Logic\Models\ModelHandler;
 use Aldeebhasan\Emigrate\Traits\Makable;
 use Illuminate\Support\Facades\File;
 
@@ -31,7 +31,19 @@ class EmigrateManager
 
     public function regenerateMigration(): void
     {
+        $this->clearDir(database_path('migrations'));
+        $this->clearDir(storage_path('emigrate'));
 
+        $this->generateMigration();
+    }
+
+    private function clearDir(string $path): void
+    {
+        if (File::exists($path)) {
+            foreach (File::files($path) as $file) {
+                File::delete($file->getPathname());
+            }
+        }
     }
 
     private function handlePath(string $path): void
@@ -45,65 +57,28 @@ class EmigrateManager
             if (is_dir($filePath)) {
                 $this->handlePath($filePath);
             } elseif (is_file($filePath)) {
-                $this->handlePathFiles($filePath);
+                $this->handleModels($filePath);
             }
         }
     }
 
-    private function handlePathFiles(string $path): void
+    private function handleModels(string $path): void
     {
-        $className = pathinfo($path, PATHINFO_FILENAME);
-        $nameSpace = $this->getNamespaceFromFile($path);
-        $className = "$nameSpace\\$className";
-        $reflection = new \ReflectionClass($className);
-        $attributes = $reflection->getAttributes(Migratable::class);
-        foreach ($attributes as $attribute) {
-            $this->handleModel($reflection, $attribute);
-        }
-    }
+        $model = ModelHandler::make($path)->handle();
 
-    private function handleModel(\ReflectionClass $reflection, \ReflectionAttribute $attribute): void
-    {
-        $filename = strtolower($reflection->getShortName());
+        $tableName = $model->getTableName();
+        $columnsConfig = $model->getConfig();
 
-        //handle the model attributes
-        $columns = $this->handleModelColumnsConfig($attribute->getArguments());
-
-        //convert the attributes to migration entities
-        $tableName = str($filename)->plural()->toString();
-        $baseTable = $this->convertColumnsToBlueprint($tableName, $columns);
+        $baseTable = $this->convertToBlueprint($tableName, $columnsConfig);
 
         //export the migration file
         $this->migrationManager->generateStub($baseTable);
-        $this->migrationManager->log($tableName, $columns);
+        $this->migrationManager->generateLog($tableName, $columnsConfig);
     }
 
-    private function handleModelColumnsConfig(array $attributes): array
+    private function convertToBlueprint(string $tableName, array $columns): TablePb
     {
-        $columns = [];
-        foreach ($attributes as $key => $value) {
-            $key = str_purify($key);
-            $value = str_purify($value);
-            //start with:  'decimal:10,2->nullable|default:empty'
-            $columnData = explode('->', $value); // [ 'decimal:10,2','index|nullable']
-            $typeData = explode(':', $columnData[0]); //['decimal','10,2']
-            $typeProperties = ! empty($typeData[1]) ? explode(',', $typeData[1]) : []; //[10,2]
-
-            $configuration = explode('|', $columnData[1] ?? ''); // ['nullable','default:empty']
-
-            $columns[$key] = [
-                'type' => $typeData[0],
-                'properties' => $typeProperties,
-                'configurations' => $configuration,
-            ];
-        }
-
-        return $columns;
-    }
-
-    private function convertColumnsToBlueprint(string $tableName, array $columns): TablePb
-    {
-        $lastMigration = $this->migrationManager->lastLog($tableName);
+        $lastMigration = $this->migrationManager->retrieveLastLog($tableName);
         $toUpdate = ! empty($lastMigration);
 
         $baseTable = $this->migrationManager->makeTable($tableName, $toUpdate ? 'update' : 'create');
@@ -124,20 +99,5 @@ class EmigrateManager
         }
 
         return $baseTable;
-    }
-
-    private function getNamespaceFromFile($file): string
-    {
-        $namespace = '';
-        $fileContents = File::get($file);
-
-        // Use regular expressions to extract the namespace from the file contents
-        preg_match('/namespace\s+([^\s;]+)/', $fileContents, $matches);
-
-        if (isset($matches[1])) {
-            $namespace = $matches[1];
-        }
-
-        return $namespace;
     }
 }
