@@ -3,6 +3,7 @@
 namespace Aldeebhasan\Emigrate\Logic\Models;
 
 use Aldeebhasan\Emigrate\Attributes\Migratable;
+use Aldeebhasan\Emigrate\Attributes\Relations\ERelation;
 use Aldeebhasan\Emigrate\Traits\Makable;
 
 /**
@@ -57,6 +58,10 @@ class ModelHandler
 
     public function detectRelations(): void
     {
+        $attributes = $this->reflection->getAttributes(ERelation::class, \ReflectionAttribute::IS_INSTANCEOF);
 
+        if (empty($attributes)) {
+            return;
+        }
     }
 }

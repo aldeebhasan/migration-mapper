@@ -17,7 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
     salary: 'decimal:10,2->nullable|default:5',
     description: 'text->nullable|default:description',
     user_id: 'integer->index',
-    father_id: 'integer->default:1',
+    father_id: 'integer->default:1|unique',
+    updated_at: 'timestamp->current',
 )]
 class XModel extends Model
 {

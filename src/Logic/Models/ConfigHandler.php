@@ -34,35 +34,6 @@ class ConfigHandler
         return $this;
     }
 
-    public function diff(array $old): array
-    {
-        $config = [];
-        foreach ($this->config as $key => $newConfig) {
-            $oldConfig = $old[$key] ?? null;
-
-            if (! $oldConfig) { // to add new column
-                $config[$key] = $newConfig;
-            } elseif (  // to update old column
-                $oldConfig['type'] != $newConfig['type'] ||
-                ! empty(array_diff($oldConfig['properties'], $newConfig['properties'])) ||
-                ! empty(array_diff($oldConfig['configurations'], $newConfig['configurations']))
-            ) {
-                $newConfig['status'] = 'update';
-                $config[$key] = $newConfig;
-            }
-        }
-
-        // to delete old column
-        foreach (array_diff(array_keys($old), array_keys($this->config)) as $dropKey) {
-            $dropConfig = $old[$dropKey];
-            $dropConfig['type'] = ColumnTypeEnum::DROP_COLUMN->value;
-            $dropConfig['status'] = 'delete';
-            $config[$dropKey] = $dropConfig;
-        }
-
-        return $config;
-    }
-
     private function handleSingleRawConfig(string $colConfig): array
     {
         $colConfig = str_purify($colConfig);
@@ -79,5 +50,34 @@ class ConfigHandler
             'configurations' => $configuration,
             'status' => 'create',
         ];
+    }
+
+    public function diff(array $old): array
+    {
+        $config = [];
+        foreach ($this->config as $key => $newConfig) {
+            $oldConfig = $old[$key] ?? null;
+
+            if (! $oldConfig) { // to add new column
+                $config[$key] = $newConfig;
+            } elseif (  // to update old column
+                $oldConfig['type'] != $newConfig['type'] ||
+                ! empty(array_diff_all($oldConfig['properties'], $newConfig['properties'])) ||
+                ! empty(array_diff_all($oldConfig['configurations'], $newConfig['configurations']))
+            ) {
+                $newConfig['status'] = 'update';
+                $config[$key] = $newConfig;
+            }
+        }
+
+        // to delete old column
+        foreach (array_diff(array_keys($old), array_keys($this->config)) as $dropKey) {
+            $dropConfig = $old[$dropKey];
+            $dropConfig['type'] = ColumnTypeEnum::DROP_COLUMN->value;
+            $dropConfig['status'] = 'delete';
+            $config[$dropKey] = $dropConfig;
+        }
+
+        return $config;
     }
 }

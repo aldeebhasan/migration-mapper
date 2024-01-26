@@ -25,6 +25,8 @@ use Aldeebhasan\Emigrate\Traits\Makable;
  * @method GeneralColumn double(string $name, int $total = 8, int $places = 2)
  * @method GeneralColumn enum(string $name, array $allowed = [])
  * @method GeneralColumn dropColumn(string $name)
+ * @method GeneralColumn timestamp(string $name)
+ * @method GeneralColumn timestamps()
  */
 class ColumnFactory
 {

@@ -4,7 +4,7 @@ namespace Aldeebhasan\Emigrate\Attributes\Relations;
 
 use Aldeebhasan\Emigrate\Attributes\EAttribute;
 
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_FUNCTION | \Attribute::TARGET_METHOD)]
 class ERelation extends EAttribute
 {
 }

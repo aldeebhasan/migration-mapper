@@ -3,6 +3,17 @@
 use Illuminate\Support\Facades\File;
 
 if (! function_exists('stub_path')) {
+    function array_diff_all(array $array1, array $array2): array
+    {
+        return array_merge(
+            array_diff($array1, $array2),
+            array_diff($array2, $array1),
+        );
+
+    }
+}
+
+if (! function_exists('stub_path')) {
     function stub_path(string $path = ''): string
     {
         $basePath = __DIR__.'/../../stubs';
@@ -19,6 +30,7 @@ if (! function_exists('str_purify')) {
 
     }
 }
+
 if (! function_exists('detect_namespace')) {
     function detect_namespace($file): string
     {
