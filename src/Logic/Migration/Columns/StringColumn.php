@@ -10,7 +10,6 @@ class StringColumn extends GeneralColumn
 
     protected $defaultLength = 255;
 
-
     public function __construct(public string $name, public int $length = 255)
     {
     }

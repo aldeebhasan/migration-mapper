@@ -40,12 +40,12 @@ class ConfigHandler
         foreach ($this->config as $key => $newConfig) {
             $oldConfig = $old[$key] ?? null;
 
-            if (!$oldConfig) { // to add new column
+            if (! $oldConfig) { // to add new column
                 $config[$key] = $newConfig;
             } elseif (  // to update old column
                 $oldConfig['type'] != $newConfig['type'] ||
-                !empty(array_diff($oldConfig['properties'], $newConfig['properties'])) ||
-                !empty(array_diff($oldConfig['configurations'], $newConfig['configurations']))
+                ! empty(array_diff($oldConfig['properties'], $newConfig['properties'])) ||
+                ! empty(array_diff($oldConfig['configurations'], $newConfig['configurations']))
             ) {
                 $newConfig['status'] = 'update';
                 $config[$key] = $newConfig;
@@ -59,6 +59,7 @@ class ConfigHandler
             $dropConfig['status'] = 'delete';
             $config[$dropKey] = $dropConfig;
         }
+
         return $config;
     }
 
@@ -68,7 +69,7 @@ class ConfigHandler
         //start with:  'decimal:10,2->nullable|default:empty'
         $columnData = explode('->', $colConfig); // [ 'decimal:10,2','index|nullable']
         $typeData = explode(':', $columnData[0]); //['decimal','10,2']
-        $typeProperties = !empty($typeData[1]) ? explode(',', $typeData[1]) : []; //[10,2]
+        $typeProperties = ! empty($typeData[1]) ? explode(',', $typeData[1]) : []; //[10,2]
 
         $configuration = explode('|', $columnData[1] ?? ''); // ['nullable','default:empty']
 

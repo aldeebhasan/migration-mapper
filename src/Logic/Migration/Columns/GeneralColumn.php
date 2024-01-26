@@ -19,7 +19,6 @@ class GeneralColumn
         return $this->type === $type;
     }
 
-
     public function toString(): string
     {
         $method = $this->type->value;

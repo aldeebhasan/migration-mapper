@@ -21,7 +21,6 @@ class MethodPb extends BaseBlueprint
         return $this->method->getType()->value;
     }
 
-
     public function isChange(): bool
     {
         return $this->method->is(MethodTypeEnum::CHANGE);
@@ -29,7 +28,7 @@ class MethodPb extends BaseBlueprint
 
     protected function template(): string
     {
-        return '->' . $this->method->toString();
+        return '->'.$this->method->toString();
     }
 
     protected function reverseTemplate(?TablePb $last): string

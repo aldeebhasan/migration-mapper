@@ -45,9 +45,7 @@ abstract class BaseBlueprint implements BlueprintIU
 
     abstract protected function reverseTemplate(?TablePb $last): string;
 
-
     abstract public function getName(): string;
-
 
     public function equal(BlueprintIU $item): bool
     {

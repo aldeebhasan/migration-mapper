@@ -74,7 +74,7 @@ class EmigrateManager
         $baseTable = $this->convertToBlueprint($tableName, $columnsConfig, $lastConfig);
         $lastTable = $this->convertToBlueprint($tableName, $lastConfig ?? []);
 
-        if (!$baseTable->isEmpty()) {
+        if (! $baseTable->isEmpty()) {
             //export the migration file
             $this->migrationManager->generateStub($baseTable, $lastTable);
             $this->migrationManager->generateLog($tableName, $columnsConfig);
