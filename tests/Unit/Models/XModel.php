@@ -12,12 +12,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Migratable(
     id: 'id->index|nullable',
-    name: 'string->nullable|default:hi there',
-    work: 'string:255->nullable|default:hi there',
-    salary: 'decimal:10,2->nullable|default:hi there',
+    name: 'string:199->nullable|default:name theres',
+    work: 'string:255->nullable|default:work theres',
+    salary: 'decimal:10,2->nullable|default:5',
     description: 'text->nullable|default:description',
     user_id: 'integer->index',
-    parent_id: 'integer->index'
+    father_id: 'integer->default:1',
 )]
 class XModel extends Model
 {

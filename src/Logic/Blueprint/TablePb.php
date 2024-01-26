@@ -56,17 +56,7 @@ class TablePb extends BaseBlueprint
         return $this->handleChain($content);
     }
 
-    private function handleChain(string $content, bool $reverse = false): string
-    {
-        $subContent = PHP_EOL;
-        foreach ($this->chains as $chain) {
-            $subContent .= $reverse ? $chain->toStringReversed() : $chain->toString();
-        }
-
-        return str_replace(self::$slot, $subContent, $content);
-    }
-
-    protected function reverseTemplate(): string
+    protected function reverseTemplate(?TablePb $last): string
     {
         $slot = self::$slot;
         $tabs = str_repeat(self::$tab, 2);
@@ -76,19 +66,28 @@ class TablePb extends BaseBlueprint
                         EOD,
             'update' => <<<EOD
                         {$tabs}Schema::table('$this->name', function (Blueprint \$table) {
-                        
                         $slot
                         {$tabs}});
                         EOD,
             'destroy' => <<<EOD
                         {$tabs}Schema::create('$this->name', function (Blueprint \$table) {
-                        
                         $slot
                         {$tabs}});
                         EOD,
             default => '',
         };
 
-        return $this->handleChain($content, true);
+        return $this->handleChain($content, true, $last);
     }
+
+    private function handleChain(string $content, bool $reverse = false, ?TablePb $last = null): string
+    {
+        $subContent = PHP_EOL;
+        foreach ($this->chains as $chain) {
+            $subContent .= $reverse ? $chain->toStringReversed($last) : $chain->toString();
+        }
+
+        return str_replace(self::$slot, $subContent, $content);
+    }
+
 }

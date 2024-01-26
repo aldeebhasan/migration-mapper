@@ -14,6 +14,12 @@ class GeneralColumn
     {
     }
 
+    public function is(ColumnTypeEnum $type): bool
+    {
+        return $this->type === $type;
+    }
+
+
     public function toString(): string
     {
         $method = $this->type->value;

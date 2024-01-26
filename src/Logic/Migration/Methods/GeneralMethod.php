@@ -12,6 +12,16 @@ class GeneralMethod
     {
     }
 
+    public function is(MethodTypeEnum $type): bool
+    {
+        return $this->type === $type;
+    }
+
+    public function getType(): MethodTypeEnum
+    {
+        return $this->type;
+    }
+
     public function toString(): string
     {
         $method = $this->type->value;

@@ -8,7 +8,21 @@ class StringColumn extends GeneralColumn
 {
     protected ColumnTypeEnum $type = ColumnTypeEnum::STRING;
 
-    public function __construct(public string $name, public $length = 255)
+    protected $defaultLength = 255;
+
+
+    public function __construct(public string $name, public int $length = 255)
     {
+    }
+
+    public function toString(): string
+    {
+        $method = $this->type->value;
+        $params = "'$this->name'";
+        if ($this->length !== $this->defaultLength) {
+            $params = "'$this->name', $this->length";
+        }
+
+        return "$method($params)";
     }
 }

@@ -24,17 +24,43 @@ abstract class BaseBlueprint implements BlueprintIU
         return $this;
     }
 
+    public function unChain(BlueprintIU $item): self
+    {
+        foreach ($this->chains as $key => $chain) {
+            if ($chain->equal($item)) {
+                unset($this->chains[$key]);
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->chains);
+    }
+
     abstract protected function template(): string;
 
-    abstract protected function reverseTemplate(): string;
+    abstract protected function reverseTemplate(?TablePb $last): string;
+
+
+    abstract public function getName(): string;
+
+
+    public function equal(BlueprintIU $item): bool
+    {
+        return $item->getName() === $this->getName();
+    }
 
     public function toString(): string
     {
         return $this->template();
     }
 
-    public function toStringReversed(): string
+    public function toStringReversed(?BlueprintIU $last): string
     {
-        return $this->reverseTemplate();
+        return $this->reverseTemplate($last);
     }
 }

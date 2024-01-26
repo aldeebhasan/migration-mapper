@@ -11,19 +11,20 @@ use Aldeebhasan\Emigrate\Logic\Migration\Columns\StringColumn;
 use Aldeebhasan\Emigrate\Traits\Makable;
 
 /**
- * @method GeneralColumn  id(string $name = 'id')
+ * @method GeneralColumn id(string $name = 'id')
  * @method GeneralColumn boolean(string $name)
  * @method GeneralColumn date(string $name)
  * @method GeneralColumn dateTime(string $name)
  * @method GeneralColumn time(string $name)
  * @method GeneralColumn integer(string $name)
  * @method GeneralColumn softDelete(string $name = 'deleted_at')
- * @method GeneralColumn string(string $name, $length = 255)
+ * @method GeneralColumn string(string $name, int $length = 255)
  * @method GeneralColumn text(string $name)
  * @method GeneralColumn decimal(string $name, int $total = 8, int $places = 2)
  * @method GeneralColumn float(string $name, int $total = 8, int $places = 2)
  * @method GeneralColumn double(string $name, int $total = 8, int $places = 2)
  * @method GeneralColumn enum(string $name, array $allowed = [])
+ * @method GeneralColumn dropColumn(string $name)
  */
 class ColumnFactory
 {

@@ -51,11 +51,11 @@ class MigrationManager
         return MethodPb::make()->setMethod($targetMethod);
     }
 
-    public function generateStub(TablePb $tablePb): void
+    public function generateStub(TablePb $tablePb, ?TablePb $lastTablePb): void
     {
         $this->stubManager->read(stub_path('migration.generate.anonymous.stub'));
-        $this->stubManager->prepare($tablePb->toString(), $tablePb->toStringReversed());
-        $prefix = now()->format('Y_m_d_u');
+        $this->stubManager->prepare($tablePb->toString(), $tablePb->toStringReversed($lastTablePb));
+        $prefix = now()->format('Y_m_d_') . time();
         $method = $tablePb->isUpdate() ? 'update' : 'create';
         $tableName = $tablePb->getName();
         $path = database_path("migrations/{$prefix}_{$method}_{$tableName}_table.php");

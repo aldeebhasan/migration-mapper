@@ -19,7 +19,7 @@ class DecimalColumn extends GeneralColumn
     public function toString(): string
     {
         $method = $this->type->value;
-        $params = $this->name;
+        $params = "'$this->name'";
         if ($this->total !== $this->defaultTotal) {
             if ($this->places !== $this->defaultPlaces) {
                 $params = "'$this->name', $this->total, $this->places";

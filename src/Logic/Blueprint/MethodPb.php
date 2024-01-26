@@ -2,6 +2,7 @@
 
 namespace Aldeebhasan\Emigrate\Logic\Blueprint;
 
+use Aldeebhasan\Emigrate\Enums\MethodTypeEnum;
 use Aldeebhasan\Emigrate\Logic\Migration\Methods\GeneralMethod;
 
 class MethodPb extends BaseBlueprint
@@ -15,13 +16,24 @@ class MethodPb extends BaseBlueprint
         return $this;
     }
 
-    protected function template(): string
+    public function getName(): string
     {
-        return '->'.$this->method->toString();
+        return $this->method->getType()->value;
     }
 
-    protected function reverseTemplate(): string
+
+    public function isChange(): bool
     {
-        return '';
+        return $this->method->is(MethodTypeEnum::CHANGE);
+    }
+
+    protected function template(): string
+    {
+        return '->' . $this->method->toString();
+    }
+
+    protected function reverseTemplate(?TablePb $last): string
+    {
+        return $this->template();
     }
 }

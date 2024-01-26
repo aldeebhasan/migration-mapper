@@ -18,8 +18,8 @@ class EmigrateTest extends TestCase
 //        $manger = MigrationManager::make();
 //
 //        dd($manger->makeMethod('nullable')->toString());
-        Emigrate::regenerateMigration();
-//        Emigrate::generateMigration();
+//        Emigrate::regenerateMigration();
+        Emigrate::generateMigration();
 
     }
 
