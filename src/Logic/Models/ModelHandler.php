@@ -5,6 +5,7 @@ namespace Aldeebhasan\Emigrate\Logic\Models;
 use Aldeebhasan\Emigrate\Attributes\Migratable;
 use Aldeebhasan\Emigrate\Attributes\Relations\ERelation;
 use Aldeebhasan\Emigrate\Traits\Makable;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static ModelHandler make(string $path)
@@ -14,6 +15,7 @@ class ModelHandler
     use Makable;
 
     private \ReflectionClass $reflection;
+    private Model $instance;
 
     private ?array $config = null;
 
@@ -23,13 +25,12 @@ class ModelHandler
         $nameSpace = detect_namespace($path);
         $className = "$nameSpace\\$className";
         $this->reflection = new \ReflectionClass($className);
+        $this->instance = $this->reflection->newInstance();
     }
 
     public function getTableName(): string
     {
-        $filename = strtolower($this->reflection->getShortName());
-
-        return str($filename)->plural()->toString();
+        return $this->instance->getTable();
     }
 
     public function getConfig(): array
@@ -58,9 +59,16 @@ class ModelHandler
 
     public function detectRelations(): void
     {
-        $attributes = $this->reflection->getAttributes(ERelation::class, \ReflectionAttribute::IS_INSTANCEOF);
+        $methods = [];
 
-        if (empty($attributes)) {
+        foreach ($this->reflection->getMethods() as $method) {
+            $attributes = $method->getAttributes(ERelation::class, \ReflectionAttribute::IS_INSTANCEOF);
+            if (!empty($attributes)) {
+                $methods[] = $attributes[0]->getArguments();
+            }
+        }
+        dd($methods);
+        if (empty($methods)) {
             return;
         }
     }

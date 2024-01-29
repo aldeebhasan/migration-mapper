@@ -27,13 +27,13 @@ class XModel extends Model
         'name', 'description', 'user_id'
     ];
 
-    #[OneToMany(related: XModel::class, fk: 'parent_id')]
+    #[OneToMany(related: XModel::class, fk: 'parent_id', lk: 'id')]
     public function children(): HasMany
     {
         return $this->hasMany(XModel::class, 'parent_id');
     }
 
-    #[OneToOne(related: XModel::class, fk: 'parent_id')]
+    #[OneToOne(related: XModel::class, fk: 'parent_id', lk: 'id')]
     public function hol(): HasOne
     {
         return $this->hasOne(XModel::class, 'parent_id');
@@ -45,7 +45,7 @@ class XModel extends Model
         return $this->belongsTo(XModel::class, 'parent_id');
     }
 
-    #[ManyToMany(related: Model::class, fk: 'parent_id')]
+    #[ManyToMany(related: Model::class, table: 'model_categories', fk: 'parent_id', lk: 'id')]
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Model::class);
