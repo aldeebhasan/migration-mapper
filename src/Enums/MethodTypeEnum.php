@@ -13,5 +13,7 @@ enum MethodTypeEnum: string
     case UNIQUE = 'unique';
     case USE_CURRENT = 'useCurrent';
     case CHANGE = 'change';
+    case REFERENCES = 'references';
+    case ON = 'on';
 
 }

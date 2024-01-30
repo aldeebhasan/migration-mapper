@@ -15,6 +15,7 @@ class ModelHandler
     use Makable;
 
     private \ReflectionClass $reflection;
+
     private Model $instance;
 
     private ?array $config = null;
@@ -54,22 +55,21 @@ class ModelHandler
         }
         //handle the model attributes
         $arguments = $attributes[0]->getArguments();
-        $this->config = ConfigHandler::make()->parse($arguments)->getConfig();
+        $this->config['columns'] = ConfigHandler::make()->parse($arguments)->getConfig();
     }
 
     public function detectRelations(): void
     {
-        $methods = [];
-
+        $relations = [];
+        $handler = RelationHandler::make($this->instance);
         foreach ($this->reflection->getMethods() as $method) {
             $attributes = $method->getAttributes(ERelation::class, \ReflectionAttribute::IS_INSTANCEOF);
-            if (!empty($attributes)) {
-                $methods[] = $attributes[0]->getArguments();
+            if (! empty($attributes)) {
+                $instance = $attributes[0]->newInstance();
+                $relations += $handler->parse($instance)->getConfig();
             }
         }
-        dd($methods);
-        if (empty($methods)) {
-            return;
-        }
+
+        $this->config['relations'] = $relations;
     }
 }

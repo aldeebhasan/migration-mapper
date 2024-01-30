@@ -15,6 +15,8 @@ use Aldeebhasan\Emigrate\Traits\Makable;
  * @method GeneralMethod unique()
  * @method GeneralMethod useCurrent()
  * @method GeneralMethod change()
+ * @method GeneralMethod references(string $value)
+ * @method GeneralMethod on(string $value)
  */
 class MethodFactory
 {
@@ -27,7 +29,7 @@ class MethodFactory
         $className = $namespace.$baseName.'Method';
 
         if (! class_exists($className)) {
-            throw new \Exception('Unsupported method name!');
+            throw new \Exception("Unsupported method name: $name!");
         }
 
         return $this->handleClassInitialization($className, $arguments);

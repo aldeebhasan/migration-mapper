@@ -2,10 +2,12 @@
 
 namespace Aldeebhasan\Emigrate;
 
+use Aldeebhasan\Emigrate\Enums\MethodTypeEnum;
 use Aldeebhasan\Emigrate\Logic\Blueprint\TablePb;
 use Aldeebhasan\Emigrate\Logic\Migration\MigrationManager;
 use Aldeebhasan\Emigrate\Logic\Models\ConfigHandler;
 use Aldeebhasan\Emigrate\Logic\Models\ModelHandler;
+use Aldeebhasan\Emigrate\Logic\Models\RelationHandler;
 use Aldeebhasan\Emigrate\Traits\Makable;
 use Illuminate\Support\Facades\File;
 
@@ -68,29 +70,42 @@ class EmigrateManager
         $model = ModelHandler::make($path)->handle();
 
         $tableName = $model->getTableName();
-        $columnsConfig = $model->getConfig();
+        $configs = $model->getConfig();
 
         $lastConfig = $this->migrationManager->retrieveLastLog($tableName);
-        $baseTable = $this->convertToBlueprint($tableName, $columnsConfig, $lastConfig);
+        $baseTable = $this->convertToBlueprint($tableName, $configs, $lastConfig);
         $lastTable = $this->convertToBlueprint($tableName, $lastConfig ?? []);
 
         if (! $baseTable->isEmpty()) {
             //export the migration file
             $this->migrationManager->generateStub($baseTable, $lastTable);
-            $this->migrationManager->generateLog($tableName, $columnsConfig);
+            $this->migrationManager->generateLog($tableName, $configs);
         }
     }
 
-    private function convertToBlueprint(string $tableName, array $columns, ?array $lastMigration = null): TablePb
+    private function convertToBlueprint(string $tableName, array $newConfig, ?array $lastConfig = null): TablePb
     {
         $method = 'create';
-        if ($lastMigration) {
-            $columns = ConfigHandler::make()->setConfig($columns)->diff($lastMigration);
+        $newColumns = $newConfig['columns'] ?? [];
+        $newRelations = $newConfig['relations'] ?? [];
+        if ($lastConfig) {
+            $newColumns = ConfigHandler::make()->setConfig($newConfig['columns'])->diff($lastConfig['columns']);
+            $newRelations = RelationHandler::make()->setConfig($newConfig['relations'])->diff($lastConfig['relations']);
             $method = 'update';
         }
 
+        //handle columns
         $baseTable = $this->migrationManager->makeTable($tableName, $method);
-        foreach ($columns as $name => $columnConfig) {
+        $this->handleColumnsInBlueprint($baseTable, $newColumns);
+        //handle relations
+        $this->handleRelationsInBlueprint($baseTable, $newRelations);
+
+        return $baseTable;
+    }
+
+    private function handleColumnsInBlueprint(TablePb $baseTable, $columnsConfig): void
+    {
+        foreach ($columnsConfig as $name => $columnConfig) {
             $type = $columnConfig['type'];
             $properties = $columnConfig['properties'];
             $baseColumn = $this->migrationManager->makeColumn($type, $name, ...$properties);
@@ -108,7 +123,21 @@ class EmigrateManager
             }
             $baseTable->chain($baseColumn);
         }
+    }
 
-        return $baseTable;
+    private function handleRelationsInBlueprint(TablePb $baseTable, $relationsConfig): void
+    {
+        foreach ($relationsConfig as $key => $relationConfig) {
+            $baseColumn = $this->migrationManager->makeColumn($relationConfig['type'], $key);
+            if ($relationConfig['status'] !== 'delete') {
+                $baseColumn->chain(
+                    $this->migrationManager->makeMethod(MethodTypeEnum::REFERENCES->value, $relationConfig['reference'])
+                );
+                $baseColumn->chain(
+                    $this->migrationManager->makeMethod(MethodTypeEnum::ON->value, $relationConfig['table'])
+                );
+            }
+            $baseTable->chain($baseColumn);
+        }
     }
 }

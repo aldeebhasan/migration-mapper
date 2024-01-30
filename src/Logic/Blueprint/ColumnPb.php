@@ -36,7 +36,10 @@ class ColumnPb extends BaseBlueprint
         $changeMethod = collect($this->chains)->first(fn (MethodPb $item) => $item->isChange());
 
         //we are updating or dropping
-        if ($changeMethod || $this->column->is(ColumnTypeEnum::DROP_COLUMN)) {
+        if ($changeMethod
+            || $this->column->is(ColumnTypeEnum::DROP_COLUMN)
+            || $this->column->is(ColumnTypeEnum::DROP_FOREIGN)
+        ) {
             /** @var ColumnPb $lastChange */
             $lastChange = collect($last->chains)->first(fn (ColumnPb $item) => $item->equal($this));
 
@@ -52,10 +55,17 @@ class ColumnPb extends BaseBlueprint
                     }
                 )
                 ->when(
-                    $this->column->is(ColumnTypeEnum::DROP_COLUMN), // we are dropping
+                    $this->column->is(ColumnTypeEnum::DROP_COLUMN), // we are dropping column
                     function (Collection $collect) use ($lastChange, $changeMethod) {
                         if ($collect->isNotEmpty()) {
-                            $lastChange->unChain($changeMethod, );
+                            $lastChange->unChain($changeMethod);
+                        }
+                    }
+                )->when(
+                    $this->column->is(ColumnTypeEnum::DROP_FOREIGN), // we are dropping foreign
+                    function (Collection $collect) use ($lastChange, $changeMethod) {
+                        if ($collect->isNotEmpty()) {
+                            $lastChange->unChain($changeMethod);
                         }
                     }
                 );
@@ -64,7 +74,11 @@ class ColumnPb extends BaseBlueprint
         }
 
         $tabs = str_repeat(self::$tab, 3);
-        $column = ColumnFactory::make(ColumnTypeEnum::DROP_COLUMN->value)->dropColumn($this->column->name);
+        if ($this->column->is(ColumnTypeEnum::FOREIGN)) {
+            $column = ColumnFactory::make()->dropForeign($this->column->name);
+        } else {
+            $column = ColumnFactory::make()->dropColumn($this->column->name);
+        }
         $content = "{$tabs}\$table->".$column->toString().';'.PHP_EOL;
 
         return $content;

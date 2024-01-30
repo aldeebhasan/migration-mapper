@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
     salary: 'decimal:10,2->nullable|default:5',
     description: 'text->nullable|default:description',
     user_id: 'integer->index',
-    father_id: 'integer->default:1|unique',
     updated_at: 'timestamp->current',
 )]
 class XModel extends Model
@@ -27,25 +26,31 @@ class XModel extends Model
         'name', 'description', 'user_id'
     ];
 
-    #[OneToMany(related: XModel::class, fk: 'parent_id', lk: 'id')]
+    #[OneToMany(related: XModel::class, foreignKey: 'parent_id', localKey: 'id')]
     public function children(): HasMany
     {
         return $this->hasMany(XModel::class, 'parent_id');
     }
 
-    #[OneToOne(related: XModel::class, fk: 'parent_id', lk: 'id')]
+    #[OneToOne(related: XModel::class, foreignKey: 'parent_id', localKey: 'id')]
     public function hol(): HasOne
     {
         return $this->hasOne(XModel::class, 'parent_id');
     }
 
-    #[ManyToOne(related: XModel::class, fk: 'parent_id')]
-    public function parent(): BelongsTo
+//    #[ManyToOne(related: XModel::class, foreignKey: 'parent_id', ownerKey: 'id')]
+//    public function parent(): BelongsTo
+//    {
+//        return $this->belongsTo(XModel::class, 'parent_id');
+//    }
+
+    #[ManyToOne(related: XModel::class, foreignKey: 'user_id', ownerKey: 'id')]
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(XModel::class, 'parent_id');
+        return $this->belongsTo(XModel::class, 'user_id');
     }
 
-    #[ManyToMany(related: Model::class, table: 'model_categories', fk: 'parent_id', lk: 'id')]
+    #[ManyToMany(related: Model::class, table: 'model_categories', foreignKey: 'parent_id', localKey: 'id')]
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Model::class);

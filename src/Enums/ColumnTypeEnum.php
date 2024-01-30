@@ -20,5 +20,7 @@ enum ColumnTypeEnum: string
     case TIMESTAMPS = 'timestamps';
     case TIMESTAMP = 'timestamp';
     case DROP_COLUMN = 'dropColumn';
+    case FOREIGN = 'foreign';
+    case DROP_FOREIGN = 'dropForeign';
 
 }

@@ -27,6 +27,8 @@ use Aldeebhasan\Emigrate\Traits\Makable;
  * @method GeneralColumn dropColumn(string $name)
  * @method GeneralColumn timestamp(string $name)
  * @method GeneralColumn timestamps()
+ * @method GeneralColumn foreign(string $name)
+ * @method GeneralColumn dropForeign(string $name)
  */
 class ColumnFactory
 {
