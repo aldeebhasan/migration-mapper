@@ -4,6 +4,7 @@ namespace Aldeebhasan\Emigrate\Logic\Migration;
 
 use Aldeebhasan\Emigrate\Logic\Blueprint\ColumnPb;
 use Aldeebhasan\Emigrate\Logic\Blueprint\MethodPb;
+use Aldeebhasan\Emigrate\Logic\Blueprint\SchemaPb;
 use Aldeebhasan\Emigrate\Logic\Blueprint\TablePb;
 use Aldeebhasan\Emigrate\Logic\IO\FileIO;
 use Aldeebhasan\Emigrate\Logic\IO\StubIO;
@@ -37,6 +38,11 @@ class MigrationManager
             ->setAction($action);
     }
 
+    public function makeSchema(): SchemaPb
+    {
+        return new SchemaPb();
+    }
+
     public function makeColumn(string $method, string $name = '', ...$args): ColumnPb
     {
         $targetColumn = $this->columnManager->{$method}($name, ...$args);
@@ -54,7 +60,6 @@ class MigrationManager
     public function generateStub(TablePb $tablePb, ?TablePb $lastTablePb): void
     {
         $this->stubManager->read(stub_path('migration.generate.anonymous.stub'));
-        //todo: work on the down function
         $this->stubManager->prepare($tablePb->toString(), '' /*$tablePb->toStringReversed($lastTablePb)*/);
         $prefix = now()->format('Y_m_d_').time();
         $method = $tablePb->isUpdate() ? 'update' : 'create';

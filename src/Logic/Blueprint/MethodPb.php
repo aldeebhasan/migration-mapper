@@ -31,7 +31,7 @@ class MethodPb extends BaseBlueprint
         return '->'.$this->method->toString();
     }
 
-    protected function reverseTemplate(?TablePb $last): string
+    protected function reverseTemplate(?BaseBlueprint $last): string
     {
         return $this->template();
     }

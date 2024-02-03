@@ -74,9 +74,14 @@ class EmigrateManager
         $tableName = $model->getTableName();
         $configs = $model->getConfig();
 
+        $this->handleModelConfig($tableName, $configs);
+    }
+
+    private function handleModelConfig(string $tableName, array $configs): void
+    {
         $lastConfig = $this->migrationManager->retrieveLastLog($tableName);
-        $baseTable = $this->convertToBlueprint($tableName, $configs, $lastConfig);
-        $lastTable = $this->convertToBlueprint($tableName, $lastConfig ?? []);
+        $baseTable = $this->convertToBlueprint(tableName: $tableName, newConfig: $configs, lastConfig: $lastConfig);
+        $lastTable = $this->convertToBlueprint(tableName: $tableName, newConfig: $lastConfig ?? []);
 
         if (! $baseTable->isEmpty()) {
             //export the migration file
@@ -91,7 +96,6 @@ class EmigrateManager
         $newColumns = $newConfig['columns'] ?? [];
         $newRelations = $newConfig['relations'] ?? [];
 
-//        dd($newConfig['columns'],$lastConfig['columns']);
         if ($lastConfig) {
             $newColumns = ConfigHandler::make()->setConfig($newConfig['columns'])->diff($lastConfig['columns']);
             $newRelations = RelationHandler::make()->setConfig($newConfig['relations'])->diff($lastConfig['relations']);

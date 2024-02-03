@@ -31,7 +31,7 @@ class ColumnPb extends BaseBlueprint
         return $this->handleChain($content);
     }
 
-    protected function reverseTemplate(?TablePb $last): string
+    protected function reverseTemplate(?BaseBlueprint $last): string
     {
         $changeMethod = collect($this->chains)->first(fn (MethodPb $item) => $item->isChange());
 
@@ -40,37 +40,34 @@ class ColumnPb extends BaseBlueprint
             || $this->column->is(ColumnTypeEnum::DROP_COLUMN)
             || $this->column->is(ColumnTypeEnum::DROP_FOREIGN)
         ) {
-            /** @var ColumnPb $lastChange */
-            $lastChange = collect($last->chains)->first(fn (ColumnPb $item) => $item->equal($this));
-
-            collect($lastChange->chains)
+            collect($last->chains)
                 ->filter(fn (MethodPb $item) => $item->isChange())
                 //if last migration is create then add change method
                 ->when(
                     $changeMethod, // we are updating
-                    function (Collection $collect) use ($lastChange, $changeMethod) {
+                    function (Collection $collect) use ($last, $changeMethod) {
                         if ($collect->isEmpty()) {
-                            $lastChange->chain($changeMethod);
+                            $last->chain($changeMethod);
                         }
                     }
                 )
                 ->when(
                     $this->column->is(ColumnTypeEnum::DROP_COLUMN), // we are dropping column
-                    function (Collection $collect) use ($lastChange, $changeMethod) {
+                    function (Collection $collect) use ($last, $changeMethod) {
                         if ($collect->isNotEmpty()) {
-                            $lastChange->unChain($changeMethod);
+                            $last->unChain($changeMethod);
                         }
                     }
                 )->when(
                     $this->column->is(ColumnTypeEnum::DROP_FOREIGN), // we are dropping foreign
-                    function (Collection $collect) use ($lastChange, $changeMethod) {
+                    function (Collection $collect) use ($last, $changeMethod) {
                         if ($collect->isNotEmpty()) {
-                            $lastChange->unChain($changeMethod);
+                            $last->unChain($changeMethod);
                         }
                     }
                 );
 
-            return $lastChange->template();
+            return $last->template();
         }
 
         $tabs = str_repeat(self::$tab, 3);
