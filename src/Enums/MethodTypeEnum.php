@@ -11,6 +11,7 @@ enum MethodTypeEnum: string
     case AUTOINCREMENT = 'autoIncrement';
     case COMMENT = 'comment';
     case UNIQUE = 'unique';
+    case FULLTEXT = 'fulltext';
     case USE_CURRENT = 'useCurrent';
     case CHANGE = 'change';
     case REFERENCES = 'references';

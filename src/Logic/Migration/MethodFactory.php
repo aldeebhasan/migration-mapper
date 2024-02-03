@@ -13,6 +13,7 @@ use Aldeebhasan\Emigrate\Traits\Makable;
  * @method GeneralMethod autoIncrement()
  * @method GeneralMethod comment(string $value = '')
  * @method GeneralMethod unique()
+ * @method GeneralMethod fulltext(mixed $value = '')
  * @method GeneralMethod useCurrent()
  * @method GeneralMethod change()
  * @method GeneralMethod references(string $value)

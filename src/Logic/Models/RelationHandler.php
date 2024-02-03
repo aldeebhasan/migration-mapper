@@ -69,7 +69,6 @@ class RelationHandler
         // to delete old column
         foreach (array_diff(array_keys($old), array_keys($this->config)) as $dropKey) {
             $dropConfig = $old[$dropKey];
-            $dropConfig['type'] = ColumnTypeEnum::DROP_FOREIGN->value;
             $dropConfig['status'] = 'delete';
             $config[$dropKey] = $dropConfig;
         }

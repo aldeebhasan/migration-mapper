@@ -41,6 +41,11 @@ abstract class BaseBlueprint implements BlueprintIU
         return empty($this->chains);
     }
 
+    public function isNotEmpty(): bool
+    {
+        return !$this->isEmpty();
+    }
+
     abstract protected function template(): string;
 
     abstract protected function reverseTemplate(?TablePb $last): string;
