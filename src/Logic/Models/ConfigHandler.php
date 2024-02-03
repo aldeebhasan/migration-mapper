@@ -2,7 +2,6 @@
 
 namespace Aldeebhasan\Emigrate\Logic\Models;
 
-use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
 use Aldeebhasan\Emigrate\Traits\Makable;
 
 class ConfigHandler
@@ -40,16 +39,16 @@ class ConfigHandler
         //start with:  'decimal:10,2->nullable|default:empty'
         $columnData = explode('->', $colConfig); // [ 'decimal:10,2','index|nullable']
         $typeData = explode(':', $columnData[0]); //['decimal','10,2']
-        $typeProperties = !empty($typeData[1]) ? explode(',', $typeData[1]) : []; //[10,2]
+        $typeProperties = ! empty($typeData[1]) ? explode(',', $typeData[1]) : []; //[10,2]
 
-        $configurations = !empty($columnData[1]) ? explode('|', $columnData[1]) : []; // ['nullable','default:empty']
+        $configurations = ! empty($columnData[1]) ? explode('|', $columnData[1]) : []; // ['nullable','default:empty']
 
         return [
             'type' => $typeData[0],
             'properties' => $typeProperties,
             'configurations' => array_map(
-                fn($configuration) => ['type' => $configuration, 'status' => 'create']
-                , $configurations
+                fn ($configuration) => ['type' => $configuration, 'status' => 'create'],
+                $configurations
             ),
             'status' => 'create',
         ];
@@ -61,12 +60,12 @@ class ConfigHandler
         foreach ($this->config as $key => $newConfig) {
             $oldConfig = $old[$key] ?? null;
 
-            if (!$oldConfig) { // to add new column
+            if (! $oldConfig) { // to add new column
                 $config[$key] = $newConfig;
             } elseif (  // to update old column
                 $oldConfig['type'] != $newConfig['type'] ||
-                !empty(array_diff_all($oldConfig['properties'], $newConfig['properties'])) ||
-                !empty(array_diff_all(
+                ! empty(array_diff_all($oldConfig['properties'], $newConfig['properties'])) ||
+                ! empty(array_diff_all(
                     array_column($oldConfig['configurations'], 'type'),
                     array_column($newConfig['configurations'], 'type')
                 ))
@@ -100,6 +99,7 @@ class ConfigHandler
         foreach (array_diff($old, $current) as $single) {
             $result[] = ['type' => $single, 'status' => 'delete'];
         }
+
         return $result;
     }
 }

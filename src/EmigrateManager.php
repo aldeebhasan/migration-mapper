@@ -78,7 +78,7 @@ class EmigrateManager
         $baseTable = $this->convertToBlueprint($tableName, $configs, $lastConfig);
         $lastTable = $this->convertToBlueprint($tableName, $lastConfig ?? []);
 
-        if (!$baseTable->isEmpty()) {
+        if (! $baseTable->isEmpty()) {
             //export the migration file
             $this->migrationManager->generateStub($baseTable, $lastTable);
             $this->migrationManager->generateLog($tableName, $configs);
@@ -141,7 +141,7 @@ class EmigrateManager
         } else {
             $method = $config['type'];
             if (in_array($method, ['index', 'fulltext', 'unique'])) {
-                $method = "drop" . str($method)->title();
+                $method = 'drop'.str($method)->title();
                 $column = $this->migrationManager->makeColumn($method, $baseColumn->getName());
                 $baseTable->chain($column);
             }

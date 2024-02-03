@@ -2,7 +2,6 @@
 
 namespace Aldeebhasan\Emigrate\Enums;
 
-
 enum RelationTypeEnum: string
 {
     case ONE_TO_MANY = 'one-to-many';

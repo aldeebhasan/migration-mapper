@@ -43,7 +43,7 @@ abstract class BaseBlueprint implements BlueprintIU
 
     public function isNotEmpty(): bool
     {
-        return !$this->isEmpty();
+        return ! $this->isEmpty();
     }
 
     abstract protected function template(): string;
