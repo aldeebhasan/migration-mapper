@@ -83,7 +83,7 @@ class EmigrateManager
         $baseTable = $this->convertToBlueprint(tableName: $tableName, newConfig: $configs, lastConfig: $lastConfig);
         $lastTable = $this->convertToBlueprint(tableName: $tableName, newConfig: $lastConfig ?? []);
 
-        if (! $baseTable->isEmpty()) {
+        if (!$baseTable->isEmpty()) {
             //export the migration file
             $this->migrationManager->generateStub($baseTable, $lastTable);
             $this->migrationManager->generateLog($tableName, $configs);
@@ -116,17 +116,19 @@ class EmigrateManager
         foreach ($columnsConfig as $colName => $columnConfig) {
             $type = $columnConfig['type'];
             $properties = $columnConfig['properties'];
+            $oldProperties = $columnConfig['old_properties'] ?? null;
 
             if ($columnConfig['status'] !== 'delete') {
                 $baseColumn = $this->migrationManager->makeColumn($type, $colName, ...$properties);
                 foreach ($columnConfig['configurations'] ?? [] as $config) {
                     $this->handleSingleColumnConfig($baseTable, $baseColumn, $config);
                 }
-                if ($columnConfig['status'] === 'update' && $baseColumn->isNotEmpty()) {
+                $hasChanged = $baseColumn->isNotEmpty() || ($oldProperties && $properties != $oldProperties);
+                if ($columnConfig['status'] === 'update' && $hasChanged) {
                     $baseMethod = $this->migrationManager->makeMethod(MethodTypeEnum::CHANGE->value);
                     $baseColumn->chain($baseMethod);
                 }
-                if ($baseColumn->isNotEmpty()) {
+                if ($baseColumn->isNotEmpty() || $columnConfig['status'] === 'create') {
                     $baseTable->chain($baseColumn);
                 }
             } else {
@@ -145,7 +147,7 @@ class EmigrateManager
         } else {
             $method = $config['type'];
             if (in_array($method, ['index', 'fulltext', 'unique'])) {
-                $method = 'drop'.str($method)->title();
+                $method = 'drop' . str($method)->title();
                 $column = $this->migrationManager->makeColumn($method, $baseColumn->getName());
                 $baseTable->chain($column);
             }

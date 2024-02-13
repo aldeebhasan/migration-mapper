@@ -12,8 +12,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Migratable(
     id: 'id->index|nullable',
-    name: 'string:199->nullable|default:name theres',
+    name: 'string:255->nullable|default:name theres',
     work: 'string:255->nullable|default:work',
+    works: 'string',
 )]
 class YModel extends Model
 {

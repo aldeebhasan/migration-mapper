@@ -76,6 +76,7 @@ class ConfigHandler
                     array_column($oldConfig['configurations'], 'type'),
                 );
                 $newConfig['configurations'] = $configurations;
+                $newConfig['old_properties'] = $oldConfig['properties'];
                 $config[$key] = $newConfig;
             }
         }
