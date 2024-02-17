@@ -8,7 +8,7 @@ class GeneralMethod
 {
     protected MethodTypeEnum $type;
 
-    public function __construct(protected mixed $value = '')
+    public function __construct(protected mixed $value = null)
     {
     }
 
@@ -26,6 +26,6 @@ class GeneralMethod
     {
         $method = $this->type->value;
 
-        return $this->value ? "$method('$this->value')" : "$method()";
+        return ! is_null($this->value) ? "$method('$this->value')" : "$method()";
     }
 }

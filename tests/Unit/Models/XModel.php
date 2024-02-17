@@ -2,7 +2,12 @@
 
 namespace Aldeebhasan\Emigrate\Test\Unit\Models;
 
-use Aldeebhasan\Emigrate\Attributes\Migratable;
+use Aldeebhasan\Emigrate\Attributes\Columns\Column;
+use Aldeebhasan\Emigrate\Attributes\Columns\Enum;
+use Aldeebhasan\Emigrate\Attributes\Columns\Id;
+use Aldeebhasan\Emigrate\Attributes\Columns\Integer;
+use Aldeebhasan\Emigrate\Attributes\Columns\String_;
+use Aldeebhasan\Emigrate\Attributes\Table;
 use Aldeebhasan\Emigrate\Attributes\Relations\{ManyToMany, ManyToOne, OneToMany, OneToOne};
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,14 +15,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-#[Migratable(
-    id: 'id->index|nullable',
-    name: 'string:199->nullable|default:name theres',
-    work: 'string:255->nullable|default:work theres',
-    salary: 'decimal:10,2->nullable|default:5',
-    description: 'text->nullable|default:description',
-    user_id: 'integer->nullable',
-    updated_at: 'timestamp->current',
+#[Table(
+    name: 'x_models',
+    columns: [
+        new Id('id'),
+        new String_('name', 255, nullable: true, default: "Hi there"),
+        new Integer('user_id', nullable: true, default: 0, index: true, unsigned: true),
+        new Enum('status', ['draft', 'pend'], nullable: true, default: 'pend', index: true, comment: 'status col'),
+    ]
 )]
 class XModel extends Model
 {

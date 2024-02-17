@@ -2,6 +2,7 @@
 
 namespace Aldeebhasan\Emigrate\Logic\Models;
 
+use Aldeebhasan\Emigrate\Attributes\Columns\Column;
 use Aldeebhasan\Emigrate\Traits\Makable;
 
 class ConfigHandler
@@ -22,30 +23,27 @@ class ConfigHandler
         return $this;
     }
 
+    /**
+     * @param array<Column> $rawConfig
+     * @return $this
+     */
     public function parse(array $rawConfig): self
     {
         $this->config = [];
-        foreach ($rawConfig as $key => $value) {
-            $key = str_purify($key);
-            $this->config[$key] = $this->handleSingleRawConfig($value);
+        foreach ($rawConfig as $column) {
+            $this->config[$column->name] = $this->handleSingleRawConfig($column);
         }
 
         return $this;
     }
 
-    private function handleSingleRawConfig(string $colConfig): array
+    private function handleSingleRawConfig(Column $colConfig): array
     {
-        $colConfig = str_purify($colConfig);
-        //start with:  'decimal:10,2->nullable|default:empty'
-        $columnData = explode('->', $colConfig); // [ 'decimal:10,2','index|nullable']
-        $typeData = explode(':', $columnData[0]); //['decimal','10,2']
-        $typeProperties = ! empty($typeData[1]) ? explode(',', $typeData[1]) : []; //[10,2]
-
-        $configurations = ! empty($columnData[1]) ? explode('|', $columnData[1]) : []; // ['nullable','default:empty']
+        $configurations = $colConfig->getConfigurations();
 
         return [
-            'type' => $typeData[0],
-            'properties' => $typeProperties,
+            'type' => $colConfig->getType()->value,
+            'properties' => $colConfig->getProperties(),
             'configurations' => array_map(
                 fn ($configuration) => ['type' => $configuration, 'status' => 'create'],
                 $configurations

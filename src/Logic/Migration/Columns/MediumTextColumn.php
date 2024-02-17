@@ -4,7 +4,7 @@ namespace Aldeebhasan\Emigrate\Logic\Migration\Columns;
 
 use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
 
-class BigIntegerColumn extends IntegerColumn
+class MediumTextColumn extends TextColumn
 {
-    protected ColumnTypeEnum $type = ColumnTypeEnum::BIG_INTEGER;
+    protected ColumnTypeEnum $type = ColumnTypeEnum::MEDIUM_TEXT;
 }

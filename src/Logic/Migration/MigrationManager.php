@@ -23,6 +23,8 @@ class MigrationManager
 
     private FileIO $logManager;
 
+    private int $stubCounter = 0;
+
     public function __construct()
     {
         $this->columnManager = ColumnFactory::make();
@@ -50,7 +52,7 @@ class MigrationManager
         return ColumnPb::make()->setColumn($targetColumn);
     }
 
-    public function makeMethod(string $method, string $value = '', ...$args): MethodPb
+    public function makeMethod(string $method, ?string $value = null, ...$args): MethodPb
     {
         $targetMethod = $this->methodManager->{$method}($value, ...$args);
 
@@ -61,7 +63,8 @@ class MigrationManager
     {
         $this->stubManager->read(stub_path('migration.generate.anonymous.stub'));
         $this->stubManager->prepare($tablePb->toString(), '' /*$tablePb->toStringReversed($lastTablePb)*/);
-        $prefix = now()->format('Y_m_d_').time();
+        //add some seconds to keep the ordering of the generated migration files
+        $prefix = now()->format('Y_m_d_').(time() + $this->stubCounter++);
         $method = $tablePb->isUpdate() ? 'update' : 'create';
         $tableName = $tablePb->getName();
         $path = database_path("migrations/{$prefix}_{$method}_{$tableName}_table.php");

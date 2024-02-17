@@ -2,8 +2,8 @@
 
 namespace Aldeebhasan\Emigrate\Logic\Models;
 
-use Aldeebhasan\Emigrate\Attributes\Migratable;
 use Aldeebhasan\Emigrate\Attributes\Relations\ERelation;
+use Aldeebhasan\Emigrate\Attributes\Table;
 use Aldeebhasan\Emigrate\Traits\Makable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +31,16 @@ class ModelHandler
 
     public function getTableName(): string
     {
-        return $this->instance->getTable();
+        $tableName = $this->instance->getTable();
+        $attributes = $this->reflection->getAttributes(Table::class);
+        if (! empty($attributes)) {
+            $table = $attributes[0]->newInstance();
+            if ($table->name) {
+                $tableName = $table->name;
+            }
+        }
+
+        return $tableName;
     }
 
     public function getConfig(): array
@@ -49,13 +58,13 @@ class ModelHandler
 
     public function detectColumns(): void
     {
-        $attributes = $this->reflection->getAttributes(Migratable::class);
+        $attributes = $this->reflection->getAttributes(Table::class);
         if (empty($attributes)) {
             return;
         }
         //handle the model attributes
         $arguments = $attributes[0]->getArguments();
-        $this->config['columns'] = ConfigHandler::make()->parse($arguments)->getConfig();
+        $this->config['columns'] = ConfigHandler::make()->parse($arguments['columns'] ?? [])->getConfig();
     }
 
     public function detectRelations(): void

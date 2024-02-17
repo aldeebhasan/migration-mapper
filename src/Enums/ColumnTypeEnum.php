@@ -5,7 +5,10 @@ namespace Aldeebhasan\Emigrate\Enums;
 enum ColumnTypeEnum: string
 {
     case BOOLEAN = 'boolean';
+    case TINY_INTEGER = 'tinyInteger';
+    case SMALL_INTEGER = 'smallInteger';
     case INTEGER = 'integer';
+    case MEDIUM_INTEGER = 'mediumInteger';
     case BIG_INTEGER = 'bigInteger';
     case DATETIME = 'dateTime';
     case DECIMAL = 'decimal';
@@ -16,7 +19,10 @@ enum ColumnTypeEnum: string
     case DATE = 'date';
     case TIME = 'time';
     case ID = 'id';
+    case TINY_TEXT = 'tinyText';
     case TEXT = 'text';
+    case MEDIUM_TEXT = 'mediumText';
+    case LONG_TEXT = 'longText';
     case ENUM = 'enum';
     case TIMESTAMPS = 'timestamps';
     case TIMESTAMP = 'timestamp';

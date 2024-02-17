@@ -38,8 +38,8 @@ class MethodFactory
 
     private function handleClassInitialization(string $class, array $arguments): GeneralMethod
     {
-        $name = $arguments[0] ?? '';
+        $value = $arguments[0] ?? '';
 
-        return $name ? new $class($name) : new $class();
+        return $value || is_numeric($value) ? new $class($value) : new $class();
     }
 }

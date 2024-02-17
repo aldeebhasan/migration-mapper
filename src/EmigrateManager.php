@@ -148,7 +148,7 @@ class EmigrateManager
     {
         if ($config['status'] === 'create') {
             $propertyData = explode(':', $config['type']);
-            $baseMethod = $this->migrationManager->makeMethod($propertyData[0], $propertyData[1] ?? '');
+            $baseMethod = $this->migrationManager->makeMethod($propertyData[0], $propertyData[1] ?? null);
             $baseColumn->chain($baseMethod);
         } else {
             $method = $config['type'];
