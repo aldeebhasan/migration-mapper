@@ -9,7 +9,7 @@ class Id extends Column
 {
     protected ColumnTypeEnum $type = ColumnTypeEnum::ID;
 
-    public function __construct(public string $name = 'id')
+    public function __construct(string $name = 'id')
     {
         return parent::__construct($name);
     }

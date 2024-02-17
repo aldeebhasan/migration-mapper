@@ -18,6 +18,6 @@ class EnumColumn extends GeneralColumn
         $allowed = array_map(fn ($x) => "'$x'", $this->allowed);
         $options = implode(', ', $allowed);
 
-        return "$method('$this->name',[$options])";
+        return "$method('$this->name', [$options])";
     }
 }

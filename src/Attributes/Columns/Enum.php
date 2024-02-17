@@ -10,16 +10,16 @@ class Enum extends Column
     protected ColumnTypeEnum $type = ColumnTypeEnum::ENUM;
 
     public function __construct(
-        public string $name,
+        public string   $name,
         protected array $allowed,
-        protected bool $nullable = false,
-        protected mixed $default = null,
-        protected bool $index = false,
-        protected bool $unique = false,
-        protected string $comment = '',
+        bool            $nullable = false,
+        mixed           $default = null,
+        bool            $index = false,
+        bool            $unique = false,
+        string          $comment = '',
     )
     {
-//        parent::__construct($name);
+        return parent::__construct($name, $nullable, $default, $index, $unique, $comment);
     }
 
     public function getProperties(): array

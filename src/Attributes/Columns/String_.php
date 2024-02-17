@@ -10,16 +10,16 @@ class String_ extends Column
     protected ColumnTypeEnum $type = ColumnTypeEnum::STRING;
 
     public function __construct(
-        string $name,
+        string        $name,
         protected int $length = 255,
-        protected bool $nullable = false,
-        protected mixed $default = null,
-        protected bool $index = false,
-        protected bool $unique = false,
-        protected string $comment = '',
+        bool          $nullable = false,
+        mixed         $default = null,
+        bool          $index = false,
+        bool          $unique = false,
+        string        $comment = '',
     )
     {
-        return parent::__construct($name);
+        return parent::__construct($name, $nullable, $default, $index, $unique, $comment);
     }
 
     public function getProperties(): array

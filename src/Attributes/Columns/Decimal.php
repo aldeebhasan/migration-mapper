@@ -10,19 +10,19 @@ class Decimal extends Column
     protected ColumnTypeEnum $type = ColumnTypeEnum::DECIMAL;
 
     public function __construct(
-        string $name,
-        public int $total = 8,
-        public int $places = 2,
-        public bool $nullable = false,
-        public mixed $default = null,
-        public bool $index = false,
-        public bool $unique = false,
-        public string $comment = '',
-        public bool $unsigned = false,
-        public bool $autoIncrement = false,
+        string         $name,
+        protected int  $total = 8,
+        protected int  $places = 2,
+        bool           $nullable = false,
+        mixed          $default = null,
+        bool           $index = false,
+        bool           $unique = false,
+        string         $comment = '',
+        protected bool $unsigned = false,
+        protected bool $autoIncrement = false,
     )
     {
-        return parent::__construct($name);
+        return parent::__construct($name, $nullable, $default, $index, $unique, $comment);
     }
 
     public function getProperties(): array
