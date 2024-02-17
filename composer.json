@@ -8,6 +8,8 @@
     "laravel migrate",
     "model migrate",
     "handle modle",
+    "migration mapper",
+    "database model mapper",
     "laravel"
   ],
   "authors": [
@@ -50,6 +52,6 @@
   },
   "scripts": {
     "fix": "php-cs-fixer fix src",
-    "test": "vendor/bin/phpunit tests/Unit/EmigrateTest.php"
+    "test": "vendor/bin/phpunit tests/Unit/MigrationMapperTest.php"
   }
 }

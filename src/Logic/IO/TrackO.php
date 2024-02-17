@@ -37,7 +37,7 @@ class TrackO extends FileIO
         return $this;
     }
 
-    public function lastLog(string $table): ?array
+    public function lastLog(): ?array
     {
         $fileContent = json_decode($this->content, true);
         $lastLog = null;
@@ -47,5 +47,19 @@ class TrackO extends FileIO
         }
 
         return $lastLog;
+    }
+
+    public function excludeLastLog(): bool
+    {
+        $fileContent = json_decode($this->content, true);
+
+        if (! empty($fileContent)) {
+            $newContent = array_slice($fileContent, 0, -1);
+            $this->content = json_encode($newContent);
+
+            return true;
+        }
+
+        return false;
     }
 }

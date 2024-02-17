@@ -10,12 +10,12 @@ class Integer extends Column
     protected ColumnTypeEnum $type = ColumnTypeEnum::INTEGER;
 
     public function __construct(
-        string         $name,
-        bool           $nullable = false,
-        mixed          $default = null,
-        bool           $index = false,
-        bool           $unique = false,
-        string         $comment = '',
+        string $name,
+        bool $nullable = false,
+        mixed $default = null,
+        bool $index = false,
+        bool $unique = false,
+        string $comment = '',
         protected bool $unsigned = false,
         protected bool $autoIncrement = false,
     )

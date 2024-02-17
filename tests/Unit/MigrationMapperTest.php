@@ -12,15 +12,13 @@ class MigrationMapperTest extends TestCase
 {
     use WithFaker;
 
-    private $x = 1;
-
     function test_a()
     {
 //        $manger = MigrationManager::make();
 //
 //        dd($manger->makeMethod('nullable')->toString());
-//        Emigrate::regenerateMigration();
-        MigrationMapper::regenerateMigration();
+//        MigrationMapper::regenerateMigration();
+        MigrationMapper::rollbackMigration();
 
     }
 

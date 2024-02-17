@@ -21,6 +21,8 @@ class MigrationManager
 
     private FileIO $stubManager;
 
+    private FileIO $trackManager;
+
     private FileIO $logManager;
 
     private int $stubCounter = 0;
@@ -30,6 +32,7 @@ class MigrationManager
         $this->columnManager = ColumnFactory::make();
         $this->methodManager = MethodFactory::make();
         $this->stubManager = StubIO::make();
+        $this->trackManager = TrackO::make();
         $this->logManager = TrackO::make();
     }
 
@@ -67,23 +70,62 @@ class MigrationManager
         $prefix = now()->format('Y_m_d_').(time() + $this->stubCounter++);
         $method = $tablePb->isUpdate() ? 'update' : 'create';
         $tableName = $tablePb->getName();
-        $path = database_path("migrations/{$prefix}_{$method}_{$tableName}_table.php");
+        $path = database_path("migrations/{$prefix}_{$method}_{$tableName}_table_m.php");
         $this->stubManager->write($path);
     }
 
     public function generateLog(string $table, array $config): void
     {
         $path = storage_path("migration-mapper/migrations_{$table}.json");
-        $this->logManager->read($path);
-        $this->logManager->prepare(json_encode($config));
-        $this->logManager->write($path);
+        $this->trackManager->read($path);
+        $this->trackManager->prepare(json_encode($config));
+        $this->trackManager->write($path);
     }
 
     public function retrieveLastLog(string $table): ?array
     {
         $path = storage_path("migration-mapper/migrations_{$table}.json");
-        $this->logManager->read($path);
+        $this->trackManager->read($path);
 
-        return $this->logManager->lastLog($table);
+        return $this->trackManager->lastLog();
+    }
+
+    public function clearLastLog(string $table): bool
+    {
+        $path = storage_path("migration-mapper/migrations_{$table}.json");
+        $this->trackManager->read($path);
+        if ($this->trackManager->excludeLastLog()) {
+            $this->trackManager->write($path);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function generateTrackLog(array $tables): void
+    {
+        $path = storage_path('migration-mapper/logs.json');
+        $this->trackManager->read($path);
+        $this->trackManager->prepare(json_encode(['time' => now()->toDateTimeString(), 'tables' => $tables]));
+        $this->trackManager->write($path);
+    }
+
+    public function clearLastTrackLog(): bool
+    {
+        $path = storage_path('migration-mapper/logs.json');
+        $this->trackManager->read($path);
+        $log = $this->trackManager->lastLog();
+        if ($this->trackManager->excludeLastLog()) {
+            $this->trackManager->write($path);
+
+            foreach ($log['tables'] ?? [] as $table) {
+                $this->clearLastLog($table);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

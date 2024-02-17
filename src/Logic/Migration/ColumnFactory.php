@@ -59,7 +59,8 @@ class ColumnFactory
             return new $class($name, $total, $places);
 
         } elseif ($class === EnumColumn::class) {
-            $allowed = $arguments[1] ?? [];
+            $allowed = $arguments[1] ?? '';
+            $allowed = explode(',', $allowed);
 
             return new $class($name, $allowed);
 

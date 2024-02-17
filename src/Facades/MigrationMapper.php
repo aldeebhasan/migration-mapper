@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static void generateMigration():
  * @method static void regenerateMigration():
+ * @method static void rollbackMigration():
  * @see MigrationMapperManager
  */
 class MigrationMapper extends Facade

@@ -10,14 +10,14 @@ class Decimal extends Column
     protected ColumnTypeEnum $type = ColumnTypeEnum::DECIMAL;
 
     public function __construct(
-        string         $name,
-        protected int  $total = 8,
-        protected int  $places = 2,
-        bool           $nullable = false,
-        mixed          $default = null,
-        bool           $index = false,
-        bool           $unique = false,
-        string         $comment = '',
+        string $name,
+        protected int $total = 8,
+        protected int $places = 2,
+        bool $nullable = false,
+        mixed $default = null,
+        bool $index = false,
+        bool $unique = false,
+        string $comment = '',
         protected bool $unsigned = false,
         protected bool $autoIncrement = false,
     )

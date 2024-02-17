@@ -19,6 +19,8 @@ class MigrationMapperManager
 
     private MigrationManager $migrationManager;
 
+    private array $tableLog = [];
+
     public function __construct()
     {
         $this->migrationManager = MigrationManager::make();
@@ -26,27 +28,40 @@ class MigrationMapperManager
 
     public function generateMigration(): void
     {
+        $this->tableLog = [];
         $paths = config('migration-mapper.model_paths');
 
         foreach ($paths as $path) {
             $this->handlePath($path);
         }
-
+        if (! empty($this->tableLog)) {
+            $this->migrationManager->generateTrackLog($this->tableLog);
+        }
     }
 
     public function regenerateMigration(): void
     {
-        $this->clearDir(database_path('migrations'));
+        $this->tableLog = [];
+        $this->clearDir(database_path('migrations'), '_m');
         $this->clearDir(storage_path('migration-mapper'));
+        $this->clearDir(storage_path('logs'));
 
         $this->generateMigration();
     }
 
-    private function clearDir(string $path): void
+    public function rollbackMigration(): void
+    {
+        $this->migrationManager->clearLastTrackLog();
+    }
+
+    private function clearDir(string $path, string $suffix = ''): void
     {
         if (File::exists($path)) {
             foreach (File::files($path) as $file) {
-                File::delete($file->getPathname());
+                if (! $suffix || str_ends_with($file->getFilenameWithoutExtension(), $suffix)) {
+                    File::delete($file->getPathname());
+                }
+
             }
         }
     }
@@ -93,6 +108,7 @@ class MigrationMapperManager
             //export the migration file
             $this->migrationManager->generateStub($baseTable, $lastTable);
             $this->migrationManager->generateLog($tableName, $configs);
+            $this->tableLog[] = $tableName;
         }
     }
 

@@ -10,13 +10,13 @@ class String_ extends Column
     protected ColumnTypeEnum $type = ColumnTypeEnum::STRING;
 
     public function __construct(
-        string        $name,
+        string $name,
         protected int $length = 255,
-        bool          $nullable = false,
-        mixed         $default = null,
-        bool          $index = false,
-        bool          $unique = false,
-        string        $comment = '',
+        bool $nullable = false,
+        mixed $default = null,
+        bool $index = false,
+        bool $unique = false,
+        string $comment = '',
     )
     {
         return parent::__construct($name, $nullable, $default, $index, $unique, $comment);
