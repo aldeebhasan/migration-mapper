@@ -2,13 +2,13 @@
 
 namespace Aldeebhasan\MigrationMapper\Test\Unit;
 
-use Aldeebhasan\MigrationMapper\EmigrateManager;
+use Aldeebhasan\MigrationMapper\MigrationMapperManager;
 use Aldeebhasan\MigrationMapper\Facades\MigrationMapper;
 use Aldeebhasan\MigrationMapper\Test\TestCase;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 
-class EmigrateTest extends TestCase
+class MigrationMapperTest extends TestCase
 {
     use WithFaker;
 

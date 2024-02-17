@@ -13,7 +13,7 @@ use Aldeebhasan\MigrationMapper\Logic\Models\RelationHandler;
 use Aldeebhasan\MigrationMapper\Traits\Makable;
 use Illuminate\Support\Facades\File;
 
-class EmigrateManager
+class MigrationMapperManager
 {
     use  Makable;
 

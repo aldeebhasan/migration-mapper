@@ -42,7 +42,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Aldeebhasan\\MigrationMapper\\EmigrateProvider"
+        "MigrationMapperProvider"
       ],
       "aliases": {
       }

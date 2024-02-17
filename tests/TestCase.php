@@ -2,7 +2,7 @@
 
 namespace Aldeebhasan\MigrationMapper\Test;
 
-use Aldeebhasan\MigrationMapper\EmigrateProvider;
+use Aldeebhasan\MigrationMapper\MigrationMapperProvider;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -17,7 +17,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function getPackageProviders($app): array
     {
-        return [EmigrateProvider::class];
+        return [MigrationMapperProvider::class];
     }
 
     protected function getEnvironmentSetUp($app)

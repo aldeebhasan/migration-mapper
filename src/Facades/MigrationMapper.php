@@ -2,13 +2,13 @@
 
 namespace Aldeebhasan\MigrationMapper\Facades;
 
-use Aldeebhasan\MigrationMapper\EmigrateManager;
+use Aldeebhasan\MigrationMapper\MigrationMapperManager;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static void generateMigration():
  * @method static void regenerateMigration():
- * @see EmigrateManager
+ * @see MigrationMapperManager
  */
 class MigrationMapper extends Facade
 {

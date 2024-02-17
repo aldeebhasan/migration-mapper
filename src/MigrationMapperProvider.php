@@ -4,7 +4,7 @@ namespace Aldeebhasan\MigrationMapper;
 
 use Illuminate\Support\ServiceProvider;
 
-class EmigrateProvider extends ServiceProvider
+class MigrationMapperProvider extends ServiceProvider
 {
     public function boot(): void
     {
@@ -20,6 +20,6 @@ class EmigrateProvider extends ServiceProvider
             __DIR__.'/../config/migration-mapper.php',
             'migration-mapper'
         );
-        $this->app->singleton('migration-mapper', EmigrateManager::class, );
+        $this->app->singleton('migration-mapper', MigrationMapperManager::class, );
     }
 }
