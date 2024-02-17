@@ -1,6 +1,6 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\IO;
+namespace Aldeebhasan\MigrationMapper\Logic\IO;
 
 /**
  * @method static StubIO make()

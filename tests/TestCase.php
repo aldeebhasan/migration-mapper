@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Test;
+namespace Aldeebhasan\MigrationMapper\Test;
 
-use Aldeebhasan\Emigrate\EmigrateProvider;
+use Aldeebhasan\MigrationMapper\EmigrateProvider;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -23,7 +23,7 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         $path = realpath(__DIR__ . '/Unit/Models');
-        $app['config']->set('emigrate.model_paths', [$path]);
+        $app['config']->set('migration-mapper.model_paths', [$path]);
 
     }
 }

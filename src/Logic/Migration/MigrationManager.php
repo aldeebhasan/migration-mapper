@@ -1,15 +1,15 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Migration;
+namespace Aldeebhasan\MigrationMapper\Logic\Migration;
 
-use Aldeebhasan\Emigrate\Logic\Blueprint\ColumnPb;
-use Aldeebhasan\Emigrate\Logic\Blueprint\MethodPb;
-use Aldeebhasan\Emigrate\Logic\Blueprint\SchemaPb;
-use Aldeebhasan\Emigrate\Logic\Blueprint\TablePb;
-use Aldeebhasan\Emigrate\Logic\IO\FileIO;
-use Aldeebhasan\Emigrate\Logic\IO\StubIO;
-use Aldeebhasan\Emigrate\Logic\IO\TrackO;
-use Aldeebhasan\Emigrate\Traits\Makable;
+use Aldeebhasan\MigrationMapper\Logic\Blueprint\ColumnPb;
+use Aldeebhasan\MigrationMapper\Logic\Blueprint\MethodPb;
+use Aldeebhasan\MigrationMapper\Logic\Blueprint\SchemaPb;
+use Aldeebhasan\MigrationMapper\Logic\Blueprint\TablePb;
+use Aldeebhasan\MigrationMapper\Logic\IO\FileIO;
+use Aldeebhasan\MigrationMapper\Logic\IO\StubIO;
+use Aldeebhasan\MigrationMapper\Logic\IO\TrackO;
+use Aldeebhasan\MigrationMapper\Traits\Makable;
 
 class MigrationManager
 {
@@ -73,7 +73,7 @@ class MigrationManager
 
     public function generateLog(string $table, array $config): void
     {
-        $path = storage_path("emigrate/migrations_{$table}.json");
+        $path = storage_path("migration-mapper/migrations_{$table}.json");
         $this->logManager->read($path);
         $this->logManager->prepare(json_encode($config));
         $this->logManager->write($path);
@@ -81,7 +81,7 @@ class MigrationManager
 
     public function retrieveLastLog(string $table): ?array
     {
-        $path = storage_path("emigrate/migrations_{$table}.json");
+        $path = storage_path("migration-mapper/migrations_{$table}.json");
         $this->logManager->read($path);
 
         return $this->logManager->lastLog($table);

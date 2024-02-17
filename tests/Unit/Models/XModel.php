@@ -1,14 +1,14 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Test\Unit\Models;
+namespace Aldeebhasan\MigrationMapper\Test\Unit\Models;
 
-use Aldeebhasan\Emigrate\Attributes\Columns\Column;
-use Aldeebhasan\Emigrate\Attributes\Columns\Enum;
-use Aldeebhasan\Emigrate\Attributes\Columns\Id;
-use Aldeebhasan\Emigrate\Attributes\Columns\Integer;
-use Aldeebhasan\Emigrate\Attributes\Columns\String_;
-use Aldeebhasan\Emigrate\Attributes\Table;
-use Aldeebhasan\Emigrate\Attributes\Relations\{ManyToMany, ManyToOne, OneToMany, OneToOne};
+use Aldeebhasan\MigrationMapper\Attributes\Columns\Column;
+use Aldeebhasan\MigrationMapper\Attributes\Columns\Enum;
+use Aldeebhasan\MigrationMapper\Attributes\Columns\Id;
+use Aldeebhasan\MigrationMapper\Attributes\Columns\Integer;
+use Aldeebhasan\MigrationMapper\Attributes\Columns\String_;
+use Aldeebhasan\MigrationMapper\Attributes\Table;
+use Aldeebhasan\MigrationMapper\Attributes\Relations\{ManyToMany, ManyToOne, OneToMany, OneToOne};
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

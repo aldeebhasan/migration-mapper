@@ -1,9 +1,9 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Attributes\Columns;
+namespace Aldeebhasan\MigrationMapper\Attributes\Columns;
 
-use Aldeebhasan\Emigrate\Attributes\EAttribute;
-use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
+use Aldeebhasan\MigrationMapper\Attributes\EAttribute;
+use Aldeebhasan\MigrationMapper\Enums\ColumnTypeEnum;
 
 /**
  * @method static Column id(string $name = 'id')

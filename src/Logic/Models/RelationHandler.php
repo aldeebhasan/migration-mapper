@@ -1,12 +1,12 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Models;
+namespace Aldeebhasan\MigrationMapper\Logic\Models;
 
-use Aldeebhasan\Emigrate\Attributes\Relations\ERelation;
-use Aldeebhasan\Emigrate\Attributes\Relations\ManyToMany;
-use Aldeebhasan\Emigrate\Attributes\Relations\ManyToOne;
-use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
-use Aldeebhasan\Emigrate\Traits\Makable;
+use Aldeebhasan\MigrationMapper\Attributes\Relations\ERelation;
+use Aldeebhasan\MigrationMapper\Attributes\Relations\ManyToMany;
+use Aldeebhasan\MigrationMapper\Attributes\Relations\ManyToOne;
+use Aldeebhasan\MigrationMapper\Enums\ColumnTypeEnum;
+use Aldeebhasan\MigrationMapper\Traits\Makable;
 use Illuminate\Database\Eloquent\Model;
 
 class RelationHandler

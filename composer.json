@@ -1,5 +1,5 @@
 {
-  "name": "aldeebhasan/emigrate",
+  "name": "aldeebhasan/migration-mapper",
   "description": "This package is designed to enable the developer to generate the migration files by just building his model",
   "type": "library",
   "license": "MIT",
@@ -20,12 +20,12 @@
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "Aldeebhasan\\Emigrate\\": "src/"
+      "Aldeebhasan\\MigrationMapper\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Aldeebhasan\\Emigrate\\Test\\": "tests/"
+      "Aldeebhasan\\MigrationMapper\\Test\\": "tests/"
     },
     "files": [
       "src/Support/helpers.php"
@@ -42,7 +42,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Aldeebhasan\\Emigrate\\EmigrateProvider"
+        "Aldeebhasan\\MigrationMapper\\EmigrateProvider"
       ],
       "aliases": {
       }

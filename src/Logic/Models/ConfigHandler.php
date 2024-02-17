@@ -1,9 +1,9 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Models;
+namespace Aldeebhasan\MigrationMapper\Logic\Models;
 
-use Aldeebhasan\Emigrate\Attributes\Columns\Column;
-use Aldeebhasan\Emigrate\Traits\Makable;
+use Aldeebhasan\MigrationMapper\Attributes\Columns\Column;
+use Aldeebhasan\MigrationMapper\Traits\Makable;
 
 class ConfigHandler
 {

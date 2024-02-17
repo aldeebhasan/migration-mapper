@@ -1,10 +1,10 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Models;
+namespace Aldeebhasan\MigrationMapper\Logic\Models;
 
-use Aldeebhasan\Emigrate\Attributes\Relations\ERelation;
-use Aldeebhasan\Emigrate\Attributes\Table;
-use Aldeebhasan\Emigrate\Traits\Makable;
+use Aldeebhasan\MigrationMapper\Attributes\Relations\ERelation;
+use Aldeebhasan\MigrationMapper\Attributes\Table;
+use Aldeebhasan\MigrationMapper\Traits\Makable;
 use Illuminate\Database\Eloquent\Model;
 
 /**

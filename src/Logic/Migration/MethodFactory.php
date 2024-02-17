@@ -1,9 +1,9 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Migration;
+namespace Aldeebhasan\MigrationMapper\Logic\Migration;
 
-use Aldeebhasan\Emigrate\Logic\Migration\Methods\GeneralMethod;
-use Aldeebhasan\Emigrate\Traits\Makable;
+use Aldeebhasan\MigrationMapper\Logic\Migration\Methods\GeneralMethod;
+use Aldeebhasan\MigrationMapper\Traits\Makable;
 
 /**
  * @method GeneralMethod default(mixed $value = '')
@@ -26,7 +26,7 @@ class MethodFactory
     public function __call(string $name, array $arguments)
     {
         $baseName = str($name)->title()->toString();
-        $namespace = 'Aldeebhasan\\Emigrate\\Logic\\Migration\\Methods\\';
+        $namespace = 'Aldeebhasan\\MigrationMapper\\Logic\\Migration\\Methods\\';
         $className = $namespace.$baseName.'Method';
 
         if (! class_exists($className)) {

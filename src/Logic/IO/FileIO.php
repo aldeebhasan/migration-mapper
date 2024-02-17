@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\IO;
+namespace Aldeebhasan\MigrationMapper\Logic\IO;
 
-use Aldeebhasan\Emigrate\Traits\Makable;
+use Aldeebhasan\MigrationMapper\Traits\Makable;
 use Illuminate\Support\Facades\File;
 
 abstract class FileIO

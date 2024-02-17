@@ -1,6 +1,6 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Attributes;
+namespace Aldeebhasan\MigrationMapper\Attributes;
 
 #[\Attribute]
 class EAttribute

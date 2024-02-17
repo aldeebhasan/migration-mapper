@@ -1,10 +1,10 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Blueprint;
+namespace Aldeebhasan\MigrationMapper\Logic\Blueprint;
 
-use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
-use Aldeebhasan\Emigrate\Logic\Migration\ColumnFactory;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\GeneralColumn;
+use Aldeebhasan\MigrationMapper\Enums\ColumnTypeEnum;
+use Aldeebhasan\MigrationMapper\Logic\Migration\ColumnFactory;
+use Aldeebhasan\MigrationMapper\Logic\Migration\Columns\GeneralColumn;
 use Illuminate\Support\Collection;
 
 class ColumnPb extends BaseBlueprint

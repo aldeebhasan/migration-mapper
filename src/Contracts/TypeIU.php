@@ -1,6 +1,6 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Contracts;
+namespace Aldeebhasan\MigrationMapper\Contracts;
 
 interface TypeIU
 {

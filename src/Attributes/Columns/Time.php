@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Attributes\Columns;
+namespace Aldeebhasan\MigrationMapper\Attributes\Columns;
 
-use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
+use Aldeebhasan\MigrationMapper\Enums\ColumnTypeEnum;
 
 #[\Attribute(\Attribute::TARGET_PARAMETER)]
 class Time extends Column

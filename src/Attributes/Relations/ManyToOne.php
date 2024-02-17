@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Attributes\Relations;
+namespace Aldeebhasan\MigrationMapper\Attributes\Relations;
 
-use Aldeebhasan\Emigrate\Enums\RelationTypeEnum;
+use Aldeebhasan\MigrationMapper\Enums\RelationTypeEnum;
 
 #[\Attribute(\Attribute::TARGET_FUNCTION | \Attribute::TARGET_METHOD)]
 class ManyToOne extends ERelation

@@ -1,6 +1,6 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Traits;
+namespace Aldeebhasan\MigrationMapper\Traits;
 
 trait Makable
 {

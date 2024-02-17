@@ -1,10 +1,10 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Test\Unit;
+namespace Aldeebhasan\MigrationMapper\Test\Unit;
 
-use Aldeebhasan\Emigrate\EmigrateManager;
-use Aldeebhasan\Emigrate\Facades\Emigrate;
-use Aldeebhasan\Emigrate\Test\TestCase;
+use Aldeebhasan\MigrationMapper\EmigrateManager;
+use Aldeebhasan\MigrationMapper\Facades\MigrationMapper;
+use Aldeebhasan\MigrationMapper\Test\TestCase;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 
@@ -20,7 +20,7 @@ class EmigrateTest extends TestCase
 //
 //        dd($manger->makeMethod('nullable')->toString());
 //        Emigrate::regenerateMigration();
-        Emigrate::regenerateMigration();
+        MigrationMapper::regenerateMigration();
 
     }
 

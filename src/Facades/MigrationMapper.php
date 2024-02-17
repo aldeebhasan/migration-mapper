@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Facades;
+namespace Aldeebhasan\MigrationMapper\Facades;
 
-use Aldeebhasan\Emigrate\EmigrateManager;
+use Aldeebhasan\MigrationMapper\EmigrateManager;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Facade;
  * @method static void regenerateMigration():
  * @see EmigrateManager
  */
-class Emigrate extends Facade
+class MigrationMapper extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'emigrate';
+        return 'migration-mapper';
     }
 }

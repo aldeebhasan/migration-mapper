@@ -1,16 +1,16 @@
 <?php
 
-namespace Aldeebhasan\Emigrate;
+namespace Aldeebhasan\MigrationMapper;
 
-use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
-use Aldeebhasan\Emigrate\Enums\MethodTypeEnum;
-use Aldeebhasan\Emigrate\Logic\Blueprint\ColumnPb;
-use Aldeebhasan\Emigrate\Logic\Blueprint\TablePb;
-use Aldeebhasan\Emigrate\Logic\Migration\MigrationManager;
-use Aldeebhasan\Emigrate\Logic\Models\ConfigHandler;
-use Aldeebhasan\Emigrate\Logic\Models\ModelHandler;
-use Aldeebhasan\Emigrate\Logic\Models\RelationHandler;
-use Aldeebhasan\Emigrate\Traits\Makable;
+use Aldeebhasan\MigrationMapper\Enums\ColumnTypeEnum;
+use Aldeebhasan\MigrationMapper\Enums\MethodTypeEnum;
+use Aldeebhasan\MigrationMapper\Logic\Blueprint\ColumnPb;
+use Aldeebhasan\MigrationMapper\Logic\Blueprint\TablePb;
+use Aldeebhasan\MigrationMapper\Logic\Migration\MigrationManager;
+use Aldeebhasan\MigrationMapper\Logic\Models\ConfigHandler;
+use Aldeebhasan\MigrationMapper\Logic\Models\ModelHandler;
+use Aldeebhasan\MigrationMapper\Logic\Models\RelationHandler;
+use Aldeebhasan\MigrationMapper\Traits\Makable;
 use Illuminate\Support\Facades\File;
 
 class EmigrateManager
@@ -26,7 +26,7 @@ class EmigrateManager
 
     public function generateMigration(): void
     {
-        $paths = config('emigrate.model_paths');
+        $paths = config('migration-mapper.model_paths');
 
         foreach ($paths as $path) {
             $this->handlePath($path);
@@ -37,7 +37,7 @@ class EmigrateManager
     public function regenerateMigration(): void
     {
         $this->clearDir(database_path('migrations'));
-        $this->clearDir(storage_path('emigrate'));
+        $this->clearDir(storage_path('migration-mapper'));
 
         $this->generateMigration();
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Migration\Columns;
+namespace Aldeebhasan\MigrationMapper\Logic\Migration\Columns;
 
-use Aldeebhasan\Emigrate\Enums\ColumnTypeEnum;
+use Aldeebhasan\MigrationMapper\Enums\ColumnTypeEnum;
 
 class BigIntegerColumn extends IntegerColumn
 {

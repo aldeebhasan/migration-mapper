@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Migration\Methods;
+namespace Aldeebhasan\MigrationMapper\Logic\Migration\Methods;
 
-use Aldeebhasan\Emigrate\Enums\MethodTypeEnum;
+use Aldeebhasan\MigrationMapper\Enums\MethodTypeEnum;
 
 class CurrentMethod extends GeneralMethod
 {

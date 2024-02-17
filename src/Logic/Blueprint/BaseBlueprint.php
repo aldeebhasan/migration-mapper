@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Blueprint;
+namespace Aldeebhasan\MigrationMapper\Logic\Blueprint;
 
-use Aldeebhasan\Emigrate\Traits\Makable;
+use Aldeebhasan\MigrationMapper\Traits\Makable;
 
 abstract class BaseBlueprint implements BlueprintIU
 {

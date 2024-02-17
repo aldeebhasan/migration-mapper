@@ -1,9 +1,9 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Blueprint;
+namespace Aldeebhasan\MigrationMapper\Logic\Blueprint;
 
-use Aldeebhasan\Emigrate\Enums\MethodTypeEnum;
-use Aldeebhasan\Emigrate\Logic\Migration\Methods\GeneralMethod;
+use Aldeebhasan\MigrationMapper\Enums\MethodTypeEnum;
+use Aldeebhasan\MigrationMapper\Logic\Migration\Methods\GeneralMethod;
 
 class MethodPb extends BaseBlueprint
 {

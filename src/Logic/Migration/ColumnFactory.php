@@ -1,14 +1,14 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Migration;
+namespace Aldeebhasan\MigrationMapper\Logic\Migration;
 
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\DecimalColumn;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\DoubleColumn;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\EnumColumn;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\FloatColumn;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\GeneralColumn;
-use Aldeebhasan\Emigrate\Logic\Migration\Columns\StringColumn;
-use Aldeebhasan\Emigrate\Traits\Makable;
+use Aldeebhasan\MigrationMapper\Logic\Migration\Columns\DecimalColumn;
+use Aldeebhasan\MigrationMapper\Logic\Migration\Columns\DoubleColumn;
+use Aldeebhasan\MigrationMapper\Logic\Migration\Columns\EnumColumn;
+use Aldeebhasan\MigrationMapper\Logic\Migration\Columns\FloatColumn;
+use Aldeebhasan\MigrationMapper\Logic\Migration\Columns\GeneralColumn;
+use Aldeebhasan\MigrationMapper\Logic\Migration\Columns\StringColumn;
+use Aldeebhasan\MigrationMapper\Traits\Makable;
 
 /**
  * @method GeneralColumn id(string $name = 'id')
@@ -38,7 +38,7 @@ class ColumnFactory
     public function __call(string $name, array $arguments)
     {
         $baseName = str($name)->title()->toString();
-        $namespace = 'Aldeebhasan\\Emigrate\\Logic\\Migration\\Columns\\';
+        $namespace = 'Aldeebhasan\\MigrationMapper\\Logic\\Migration\\Columns\\';
         $className = $namespace.$baseName.'Column';
 
         if (! class_exists($className)) {

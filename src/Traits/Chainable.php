@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Traits;
+namespace Aldeebhasan\MigrationMapper\Traits;
 
-use Aldeebhasan\Emigrate\Logic\Blueprint\BlueprintIU;
+use Aldeebhasan\MigrationMapper\Logic\Blueprint\BlueprintIU;
 
 trait Chainable
 {

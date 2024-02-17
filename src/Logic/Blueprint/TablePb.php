@@ -1,6 +1,6 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Logic\Blueprint;
+namespace Aldeebhasan\MigrationMapper\Logic\Blueprint;
 
 class TablePb extends BaseBlueprint
 {

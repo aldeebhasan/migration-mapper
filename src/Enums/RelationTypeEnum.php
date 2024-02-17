@@ -1,6 +1,6 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Enums;
+namespace Aldeebhasan\MigrationMapper\Enums;
 
 enum RelationTypeEnum: string
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Aldeebhasan\Emigrate\Attributes\Relations;
+namespace Aldeebhasan\MigrationMapper\Attributes\Relations;
 
-use Aldeebhasan\Emigrate\Attributes\EAttribute;
+use Aldeebhasan\MigrationMapper\Attributes\EAttribute;
 
 #[\Attribute(\Attribute::TARGET_FUNCTION | \Attribute::TARGET_METHOD)]
 class ERelation extends EAttribute
