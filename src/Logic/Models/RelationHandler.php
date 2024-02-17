@@ -15,6 +15,8 @@ class RelationHandler
 
     private ?array $config = null;
 
+    private ?array $tableConfig = null;
+
     public function __construct(private ?Model $model = null)
     {
     }
@@ -22,6 +24,11 @@ class RelationHandler
     public function getConfig(): array
     {
         return $this->config ?? [];
+    }
+
+    public function getTableConfig(): array
+    {
+        return $this->tableConfig ?? [];
     }
 
     public function setConfig(array $config): self
@@ -34,19 +41,53 @@ class RelationHandler
     public function parse(ERelation $instance): self
     {
         $this->config = [];
+        $this->tableConfig = [];
         if ($instance instanceof ManyToOne) {
             $this->config[$instance->foreignKey] = [
                 'type' => ColumnTypeEnum::FOREIGN->value,
                 'table' => $this->model->getTable(),
-                'reference' => $instance->ownerKey,
+                'reference' => $instance->ownerKey ?: $this->model->getKeyName(),
                 'status' => 'create',
             ];
         } elseif ($instance instanceof ManyToMany) {
-//            $this->config[] = [
-//                'column' => $instance->foreignKey,
-//                'table' => $this->model->getTable(),
-//                'reference' => $instance->ownerKey
-//            ];
+            $foreignConfig = [
+                'type' => ColumnTypeEnum::BIG_INTEGER->value,
+                'properties' => [],
+                'configurations' => [
+                    [
+                        'type' => 'index',
+                        'status' => 'create',
+                    ],
+                ],
+                'status' => 'create',
+            ];
+            $tableConfigs = [
+                'columns' => [
+                    'id' => [
+                        'type' => ColumnTypeEnum::ID->value,
+                        'properties' => [],
+                        'configurations' => [],
+                        'status' => 'create',
+                    ],
+                    $instance->foreignKey ?: $this->model->getForeignKey() => $foreignConfig,
+                    $instance->targetForeignKey => $foreignConfig,
+                ],
+                'relations' => [
+                    $instance->foreignKey ?: $this->model->getForeignKey() => [
+                        'type' => ColumnTypeEnum::FOREIGN->value,
+                        'table' => $this->model->getTable(),
+                        'reference' => $instance->localKey ?: $this->model->getKeyName(),
+                        'status' => 'create',
+                    ],
+                    $instance->targetForeignKey => [
+                        'type' => ColumnTypeEnum::FOREIGN->value,
+                        'table' => app($instance->related)->getTable(),
+                        'reference' => $instance->targetLocalKey ?: app($instance->related)->getKeyName(),
+                        'status' => 'create',
+                    ],
+                ],
+            ];
+            $this->tableConfig[$instance->table] = $tableConfigs;
         }
 
         return $this;

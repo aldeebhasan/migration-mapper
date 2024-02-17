@@ -32,11 +32,11 @@ class XModel extends Model
         return $this->hasMany(XModel::class, 'parent_id');
     }
 
-    #[OneToOne(related: XModel::class, foreignKey: 'parent_id', localKey: 'id')]
-    public function hol(): HasOne
-    {
-        return $this->hasOne(XModel::class, 'parent_id');
-    }
+//    #[OneToOne(related: XModel::class, foreignKey: 'parent_id', localKey: 'id')]
+//    public function hol(): HasOne
+//    {
+//        return $this->hasOne(XModel::class, 'parent_id');
+//    }
 
 //    #[ManyToOne(related: XModel::class, foreignKey: 'parent_id', ownerKey: 'id')]
 //    public function parent(): BelongsTo
@@ -50,9 +50,9 @@ class XModel extends Model
         return $this->belongsTo(XModel::class, 'user_id');
     }
 
-    #[ManyToMany(related: Model::class, table: 'model_categories', foreignKey: 'parent_id', localKey: 'id')]
+    #[ManyToMany(related: XModel::class, table: 'model_categories', foreignKey: 'parent_id', localKey: 'id', targetForeignKey: 'model_id', targetLocalKey: 'id')]
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Model::class);
+        return $this->belongsToMany(XModel::class);
     }
 }

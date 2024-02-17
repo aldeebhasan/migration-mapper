@@ -11,7 +11,7 @@ class OneToOne extends ERelation
     {
         parent::__construct(RelationTypeEnum::ONE_TO_ONE->value);
         if (! $this->foreignKey) {
-            $this->foreignKey = $this->getFK($this->related);
+            $this->foreignKey = app($this->related)->getForeignKey();
         }
     }
 }

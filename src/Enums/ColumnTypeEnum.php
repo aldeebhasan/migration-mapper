@@ -6,6 +6,7 @@ enum ColumnTypeEnum: string
 {
     case BOOLEAN = 'boolean';
     case INTEGER = 'integer';
+    case BIG_INTEGER = 'bigInteger';
     case DATETIME = 'dateTime';
     case DECIMAL = 'decimal';
     case DOUBLE = 'double';
@@ -20,6 +21,8 @@ enum ColumnTypeEnum: string
     case TIMESTAMPS = 'timestamps';
     case TIMESTAMP = 'timestamp';
     case FOREIGN = 'foreign';
+    case FOREIGN_ID = 'foreignId';
+    case FOREIGN_ID_FOR = 'foreignIdFor';
     case DROP_COLUMN = 'dropColumn';
     case DROP_INDEX = 'dropIndex';
     case DROP_FULLTEXT = 'dropFulltext';

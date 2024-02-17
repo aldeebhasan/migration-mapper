@@ -75,6 +75,12 @@ class EmigrateManager
         $configs = $model->getConfig();
 
         $this->handleModelConfig($tableName, $configs);
+
+        if (! empty($configs['tables'])) {
+            foreach ($configs['tables'] as $extraTableName => $extraTableConfigs) {
+                $this->handleModelConfig($extraTableName, $extraTableConfigs);
+            }
+        }
     }
 
     private function handleModelConfig(string $tableName, array $configs): void
@@ -83,7 +89,7 @@ class EmigrateManager
         $baseTable = $this->convertToBlueprint(tableName: $tableName, newConfig: $configs, lastConfig: $lastConfig);
         $lastTable = $this->convertToBlueprint(tableName: $tableName, newConfig: $lastConfig ?? []);
 
-        if (!$baseTable->isEmpty()) {
+        if (! $baseTable->isEmpty()) {
             //export the migration file
             $this->migrationManager->generateStub($baseTable, $lastTable);
             $this->migrationManager->generateLog($tableName, $configs);
@@ -147,7 +153,7 @@ class EmigrateManager
         } else {
             $method = $config['type'];
             if (in_array($method, ['index', 'fulltext', 'unique'])) {
-                $method = 'drop' . str($method)->title();
+                $method = 'drop'.str($method)->title();
                 $column = $this->migrationManager->makeColumn($method, $baseColumn->getName());
                 $baseTable->chain($column);
             }

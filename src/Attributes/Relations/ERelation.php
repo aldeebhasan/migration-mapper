@@ -10,9 +10,4 @@ class ERelation extends EAttribute
     public function __construct(public string $type)
     {
     }
-
-    protected function getFK(string $related): string
-    {
-        return app($related)->getKeyName();
-    }
 }

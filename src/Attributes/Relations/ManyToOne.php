@@ -11,7 +11,7 @@ class ManyToOne extends ERelation
     {
         parent::__construct(RelationTypeEnum::MANY_TO_ONE->value);
         if (! $this->foreignKey) {
-            $this->foreignKey = $this->getFK($this->related);
+            $this->foreignKey = app($this->related)->getForeignKey();
         }
     }
 }

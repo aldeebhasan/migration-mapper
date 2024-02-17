@@ -61,15 +61,19 @@ class ModelHandler
     public function detectRelations(): void
     {
         $relations = [];
+        $tables = [];
         $handler = RelationHandler::make($this->instance);
         foreach ($this->reflection->getMethods() as $method) {
             $attributes = $method->getAttributes(ERelation::class, \ReflectionAttribute::IS_INSTANCEOF);
             if (! empty($attributes)) {
                 $instance = $attributes[0]->newInstance();
-                $relations += $handler->parse($instance)->getConfig();
+                $handler = $handler->parse($instance);
+                $relations += $handler->getConfig();
+                $tables += $handler->getTableConfig();
             }
         }
 
         $this->config['relations'] = $relations;
+        $this->config['tables'] = $tables;
     }
 }
