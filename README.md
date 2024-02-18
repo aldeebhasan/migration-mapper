@@ -1,6 +1,5 @@
 Laravel Migration Mapper Package
 =====
-------------
 Automatically generate you migration files from your models 
 
 ## Why
