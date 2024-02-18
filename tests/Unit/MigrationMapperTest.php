@@ -7,6 +7,7 @@ use Aldeebhasan\MigrationMapper\Facades\MigrationMapper;
 use Aldeebhasan\MigrationMapper\Test\TestCase;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
 
 class MigrationMapperTest extends TestCase
 {
@@ -18,8 +19,9 @@ class MigrationMapperTest extends TestCase
 //
 //        dd($manger->makeMethod('nullable')->toString());
 //        MigrationMapper::regenerateMigration();
-        MigrationMapper::rollbackMigration();
+//        MigrationMapper::generateMigration();
 
+        Artisan::call("mapper:generate");
     }
 
 }

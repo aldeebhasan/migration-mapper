@@ -26,7 +26,7 @@ class MigrationMapperManager
         $this->migrationManager = MigrationManager::make();
     }
 
-    public function generateMigration(): void
+    public function generateMigration(): array
     {
         $this->tableLog = [];
         $paths = config('migration-mapper.model_paths');
@@ -35,11 +35,13 @@ class MigrationMapperManager
             $this->handlePath($path);
         }
         if (! empty($this->tableLog)) {
-            $this->migrationManager->generateTrackLog($this->tableLog);
+            $this->migrationManager->generateTrackLog(array_column($this->tableLog, 'table'));
         }
+
+        return  $this->tableLog;
     }
 
-    public function regenerateMigration(): void
+    public function regenerateMigration(): array
     {
         $this->tableLog = [];
         $this->clearDir(database_path('migrations'), '_m');
@@ -47,6 +49,8 @@ class MigrationMapperManager
         $this->clearDir(storage_path('logs'));
 
         $this->generateMigration();
+
+        return  $this->tableLog;
     }
 
     public function rollbackMigration(): void
@@ -106,9 +110,9 @@ class MigrationMapperManager
 
         if (! $baseTable->isEmpty()) {
             //export the migration file
-            $this->migrationManager->generateStub($baseTable, $lastTable);
+            $migrationPath = $this->migrationManager->generateStub($baseTable, $lastTable);
             $this->migrationManager->generateLog($tableName, $configs);
-            $this->tableLog[] = $tableName;
+            $this->tableLog[] = ['table' => $tableName, 'file' => $migrationPath];
         }
     }
 

@@ -63,7 +63,7 @@ class MigrationManager
         return MethodPb::make()->setMethod($targetMethod);
     }
 
-    public function generateStub(TablePb $tablePb, ?TablePb $lastTablePb): void
+    public function generateStub(TablePb $tablePb, ?TablePb $lastTablePb): string
     {
         $this->stubManager->read(stub_path('migration.generate.anonymous.stub'));
         $this->stubManager->prepare($tablePb->toString(), '' /*$tablePb->toStringReversed($lastTablePb)*/);
@@ -71,8 +71,11 @@ class MigrationManager
         $prefix = now()->format('Y_m_d_').(time() + $this->stubCounter++);
         $method = $tablePb->isUpdate() ? 'update' : 'create';
         $tableName = $tablePb->getName();
-        $path = database_path("migrations/{$prefix}_{$method}_{$tableName}_table_m.php");
+        $migrationPath = "migrations/{$prefix}_{$method}_{$tableName}_table_m.php";
+        $path = database_path($migrationPath);
         $this->stubManager->write($path);
+
+        return $migrationPath;
     }
 
     public function generateLog(string $table, array $config): void
