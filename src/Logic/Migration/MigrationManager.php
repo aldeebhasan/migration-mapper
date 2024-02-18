@@ -10,6 +10,7 @@ use Aldeebhasan\MigrationMapper\Logic\IO\FileIO;
 use Aldeebhasan\MigrationMapper\Logic\IO\StubIO;
 use Aldeebhasan\MigrationMapper\Logic\IO\TrackO;
 use Aldeebhasan\MigrationMapper\Traits\Makable;
+use Illuminate\Support\Facades\File;
 
 class MigrationManager
 {
@@ -103,6 +104,23 @@ class MigrationManager
         return false;
     }
 
+    public function clearLastLogFile(string $table): void
+    {
+        $path = database_path('migrations');
+        $fileData = collect();
+        foreach (File::files($path) as $file) {
+            if (str_ends_with($file->getFilename(), "{$table}_table_m.php")) {
+                $fileData->push([
+                    'file' => $file,
+                    'date' => $file->getMTime(),
+                ]);
+            }
+        }
+        $newest = $fileData->sortByDesc('date')->first();
+        File::delete($newest['file']->getPathname());
+
+    }
+
     public function generateTrackLog(array $tables): void
     {
         $path = storage_path('migration-mapper/logs.json');
@@ -121,6 +139,7 @@ class MigrationManager
 
             foreach ($log['tables'] ?? [] as $table) {
                 $this->clearLastLog($table);
+                $this->clearLastLogFile($table);
             }
 
             return true;
