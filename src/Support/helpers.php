@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\File;
 
-if (! function_exists('stub_path')) {
+if (! function_exists('array_diff_all')) {
     function array_diff_all(array $array1, array $array2): array
     {
         return array_merge(

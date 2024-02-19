@@ -23,7 +23,7 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         $path = realpath(__DIR__ . '/Unit/Models');
-        $app['config']->set('migration-mapper.model_paths', [$path]);
+        $app['config']->set('migration-mapper.models_paths', [$path]);
 
     }
 }

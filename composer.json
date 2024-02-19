@@ -23,15 +23,15 @@
   "autoload": {
     "psr-4": {
       "Aldeebhasan\\MigrationMapper\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Aldeebhasan\\MigrationMapper\\Test\\": "tests/"
     },
     "files": [
       "src/Support/helpers.php"
     ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Aldeebhasan\\MigrationMapper\\Test\\": "tests/"
+    }
   },
   "require": {
     "php": ">=8.1",
@@ -44,7 +44,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "MigrationMapperProvider"
+        "Aldeebhasan\\MigrationMapper\\MigrationMapperProvider"
       ],
       "aliases": {
       }

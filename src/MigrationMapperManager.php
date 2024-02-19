@@ -29,7 +29,7 @@ class MigrationMapperManager
     public function generateMigration(): array
     {
         $this->tableLog = [];
-        $paths = config('migration-mapper.model_paths');
+        $paths = config('migration-mapper.models_paths');
 
         foreach ($paths as $path) {
             $this->handlePath($path);

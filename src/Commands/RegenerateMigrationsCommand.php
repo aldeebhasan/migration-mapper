@@ -29,6 +29,7 @@ class RegenerateMigrationsCommand extends Command
     public function handle()
     {
         $this->output->info('Regenerating migrations:');
+        $this->output->confirm('Are you sure you want to regenerate migrations?');
         $logs = MigrationMapper::regenerateMigration();
         $count = count($logs);
         $this->output->table(['Table', 'Migration'], $logs);

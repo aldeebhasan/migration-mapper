@@ -6,6 +6,7 @@ use Aldeebhasan\MigrationMapper\Attributes\Relations\ERelation;
 use Aldeebhasan\MigrationMapper\Attributes\Relations\ManyToMany;
 use Aldeebhasan\MigrationMapper\Attributes\Relations\ManyToOne;
 use Aldeebhasan\MigrationMapper\Enums\ColumnTypeEnum;
+use Aldeebhasan\MigrationMapper\Enums\MethodTypeEnum;
 use Aldeebhasan\MigrationMapper\Traits\Makable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -55,7 +56,10 @@ class RelationHandler
                 'properties' => [],
                 'configurations' => [
                     [
-                        'type' => 'index',
+                        'type' => MethodTypeEnum::INDEX->value,
+                        'status' => 'create',
+                    ], [
+                        'type' => MethodTypeEnum::UNSIGNED->value,
                         'status' => 'create',
                     ],
                 ],

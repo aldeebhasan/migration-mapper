@@ -28,7 +28,7 @@ class GenerateMigrationsCommand extends Command
      */
     public function handle()
     {
-        $this->output->info('Generating migrations:');
+        $this->output->section('Generating migrations:');
         $logs = MigrationMapper::generateMigration();
         $count = count($logs);
         $this->output->table(['Table', 'Migration'], $logs);

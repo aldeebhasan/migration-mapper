@@ -18,10 +18,10 @@ class MigrationMapperTest extends TestCase
 //        $manger = MigrationManager::make();
 //
 //        dd($manger->makeMethod('nullable')->toString());
-//        MigrationMapper::regenerateMigration();
+        MigrationMapper::regenerateMigration();
 //        MigrationMapper::generateMigration();
 
-        Artisan::call("mapper:generate");
+//        Artisan::call("mapper:generate");
     }
 
 }

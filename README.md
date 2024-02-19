@@ -21,7 +21,7 @@ composer require aldeebhasan/migration-mapper
 After installation run the following code to publish the config:
 
 ```bash
-php artisan vendor:publish --tag=migration-mapper
+php artisan vendor:publish --tag=migration-mapper-config
 ```
 
 ## Basic Usage
