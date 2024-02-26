@@ -33,7 +33,7 @@ Let's suppose that you have a model named as `Product` with three parameters `[i
         new Id(),
         new String_('name', length:255, default: "admin"),
         new Text('description', length:255, default: "admin"),
-        new Integer('category_id', nullable: true, index: true, unsigned: true),
+        new BigInteger('category_id', nullable: true, index: true, unsigned: true),
         new Enum('visible', ['off', 'on'], default: 'off', comment: 'status of the product'),
     ]
 )]
@@ -47,6 +47,13 @@ class XModel extends Model
 Each time you want to generate the migration files, you simply need to call:
 ```bash
 php artisan mapper:generate
+```
+
+The result of the above command will be: 
+```
+database
+    migrations
+        2024_02_19_1708369156_create_x_models_table_m.php
 ```
 
 ***Note that the `name` parameter of table is optional. If it doesn't provided we will detect the table name from the model*** 
@@ -89,6 +96,51 @@ php artisan mapper:rollback
 * LongText()
 
 Each of these types has a specific parameters that represent the operation the can handle.
+
+### Relations:
+This package can also handle the relation between models.
+The relation that we may interest in is `Many To One` and `Many To Many` relations, since they have direct effect on the model itself
+
+lets consider that we have the following model:
+```php
+#[Table(
+    columns: [
+        new Id(),
+        new String_('name', length:255, default: "admin"),
+        new BigInteger('category_id',unsigned: true,index: true),
+    ]
+)]
+class Product extends Model
+{
+    protected $fillable = [
+        'name','category_id'
+    ]; 
+    
+    #[ManyToOne(related: Category::class)]
+    public function category(): HasMany
+    {
+        return $this->belongsTo(Category::class, 'category_id')   
+    }
+    
+    #[ManyToMany(related: Product::class, table: 'product_related', foreignKey: 'source_id', localKey: 'id', targetForeignKey: 'target_id', targetLocalKey: 'id')]
+    public function related_products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class,'product_related', 'source_id', 'target_id');
+    }
+    
+}
+```
+By calling `php artisan mapper:generate`,
+the package will generate  two tables for you
+and we will get the followings:
+```
+database
+    migrations
+        2024_02_19_1708369156_create_products_table_m.php
+        2024_02_19_1708369157_create_product_related_table_m.php
+```
+
+***Please Note the other kind of relation has no effect over the model, so there is no idea of handling them.***
 
 ## License
 
